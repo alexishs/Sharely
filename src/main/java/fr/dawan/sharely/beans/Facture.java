@@ -3,11 +3,14 @@ package fr.dawan.sharely.beans;
 import java.util.Date;
 import java.util.List;
 
+import fr.dawan.sharely.enums.EnumRepartition;
+
 public class Facture {
 
 	private Date date;
 	private String libelle;
 	private double montant;
+	private EnumRepartition repartition;
 	private List<LigneFacture> ligneFacture;
 	private List<Utilisateur> participants;
 	
@@ -18,6 +21,7 @@ public class Facture {
 		this.date = date;
 		this.libelle = libelle;
 		this.montant = montant;
+		this.repartition = EnumRepartition.AUTOMATIQUE;
 	}
 
 	public Date getDate() {
@@ -44,6 +48,14 @@ public class Facture {
 		this.montant = montant;
 	}
 
+	public EnumRepartition getRepartition() {
+		return repartition;
+	}
+
+	public void setRepartition(EnumRepartition repartition) {
+		this.repartition = repartition;
+	}
+	
 	public List<LigneFacture> getLigneFacture() {
 		return ligneFacture;
 	}
@@ -59,7 +71,5 @@ public class Facture {
 	public void setParticipants(List<Utilisateur> participants) {
 		this.participants = participants;
 	}
-
-
 	
 }
