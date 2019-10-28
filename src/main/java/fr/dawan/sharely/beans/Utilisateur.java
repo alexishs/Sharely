@@ -1,23 +1,24 @@
 package fr.dawan.sharely.beans;
 
-public class Utilisateur {
+import java.util.List;
+
+public abstract class Utilisateur {
 	
+	private int id;
 	private String nom;
 	private String prenom;
-	private String email;
-	private String password;
-	private boolean inscrit;
+	private String email; // obligatoire si Utilisateur Réel
 	
-	public Utilisateur() {}
+	private List<Participation> participations;
 	
-	public Utilisateur(String nom, String prenom, String email, String password) {
-		super();
-		this.nom = nom;
-		this.prenom = prenom;
-		this.email = email;
-		this.password = password;
+	public int getId() {
+		return id;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public String getNom() {
 		return nom;
 	}
@@ -42,20 +43,12 @@ public class Utilisateur {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
+	public List<Participation> getParticipations() {
+		return participations;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public boolean isInscrit() {
-		return inscrit;
-	}
-
-	public void setInscrit(boolean inscrit) {
-		this.inscrit = inscrit;
+	public void setParticipations(List<Participation> participations) {
+		this.participations = participations;
 	}
 	
 }

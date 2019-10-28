@@ -11,19 +11,9 @@ public class Facture {
 	private String libelle;
 	private double montant;
 	private EnumRepartition repartition;
-	private List<LigneFacture> ligneFacture;
-	private List<Utilisateur> participants;
+	private List<LigneFacture> lignesFactures; // obligatoire selon le mode de répartition choisi 
+	private List<Participation> participations;
 	
-	public Facture() {}
-
-	public Facture(Date date, String libelle, double montant) {
-		super();
-		this.date = date;
-		this.libelle = libelle;
-		this.montant = montant;
-		this.repartition = EnumRepartition.AUTOMATIQUE;
-	}
-
 	public Date getDate() {
 		return date;
 	}
@@ -56,20 +46,20 @@ public class Facture {
 		this.repartition = repartition;
 	}
 	
-	public List<LigneFacture> getLigneFacture() {
-		return ligneFacture;
+	public List<LigneFacture> getLignesFactures() {
+		return lignesFactures;
 	}
 
-	public void setLigneFacture(List<LigneFacture> ligneFacture) {
-		this.ligneFacture = ligneFacture;
+	public void setLignesFactures(List<LigneFacture> lignesFactures) {
+		this.lignesFactures = lignesFactures;
 	}
 
-	public List<Utilisateur> getParticipants() {
-		return participants;
+	public List<Participation> getParticipations() {
+		return participations;
 	}
 
-	public void setParticipants(List<Utilisateur> participants) {
-		this.participants = participants;
+	public void setParticipations(List<Participation> participations) {
+		this.participations = participations;
 	}
 	
 }
