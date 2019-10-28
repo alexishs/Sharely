@@ -1,7 +1,9 @@
 package fr.dawan.sharely.beans;
 
 public class LigneFacture {
-
+	
+	private int id;
+	private Facture facture;
 	private String libelle;
 	private int quantite;
 	private double montant;
@@ -46,6 +48,22 @@ public class LigneFacture {
 
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Facture getFacture() {
+		return facture;
+	}
+
+	public void setFacture(Facture facture) {
+		this.facture = facture;
 	}
 
 

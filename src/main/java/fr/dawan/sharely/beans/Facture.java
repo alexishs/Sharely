@@ -7,20 +7,16 @@ import fr.dawan.sharely.enums.EnumRepartition;
 
 public class Facture {
 
-	private Date date;
+	private int id;
+	private Date dateFacture;
+	private Date dateValidation;
 	private String libelle;
 	private double montant;
 	private EnumRepartition repartition;
 	private List<LigneFacture> lignesFactures; // obligatoire selon le mode de répartition choisi 
 	private List<Participation> participations;
 	
-	public Date getDate() {
-		return date;
-	}
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
 	
 	public String getLibelle() {
 		return libelle;
@@ -60,6 +56,30 @@ public class Facture {
 
 	public void setParticipations(List<Participation> participations) {
 		this.participations = participations;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Date getDateFacture() {
+		return dateFacture;
+	}
+
+	public void setDateFacture(Date dateFacture) {
+		this.dateFacture = dateFacture;
+	}
+
+	public Date getDateValidation() {
+		return dateValidation;
+	}
+
+	public void setDateValidation(Date dateValidation) {
+		this.dateValidation = dateValidation;
 	}
 	
 }

@@ -10,9 +10,8 @@ public class Participation {
 	private double montantDu;
 	private double montantPaye;
 	private Date dateValidationSaisie;
-
 	private Utilisateur utilisateur;
-	private List<LigneFacture> lignesFactures;
+	private List<LigneFacture> lignesFactures; // non obligatoire selon méthode de répartition
 	
 	public int getId() {
 		return id;
