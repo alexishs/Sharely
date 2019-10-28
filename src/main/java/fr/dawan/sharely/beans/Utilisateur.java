@@ -6,17 +6,16 @@ public class Utilisateur {
 	private String prenom;
 	private String email;
 	private String password;
-	private boolean actif;
+	private boolean inscrit;
 	
 	public Utilisateur() {}
 	
-	public Utilisateur(String nom, String prenom, String email, String password, boolean actif) {
+	public Utilisateur(String nom, String prenom, String email, String password) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
 		this.password = password;
-		this.actif = actif;
 	}
 
 	public String getNom() {
@@ -51,12 +50,12 @@ public class Utilisateur {
 		this.password = password;
 	}
 
-	public boolean isActif() {
-		return actif;
+	public boolean isInscrit() {
+		return inscrit;
 	}
 
-	public void setActif(boolean actif) {
-		this.actif = actif;
+	public void setInscrit(boolean inscrit) {
+		this.inscrit = inscrit;
 	}
 	
 }
