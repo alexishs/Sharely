@@ -1,21 +1,33 @@
 package fr.dawan.sharely.beans;
 
+import java.util.Date;
 import java.util.List;
 
 public class Facture {
 
+	private Date date;
 	private String libelle;
 	private double montant;
 	private List<LigneFacture> ligneFacture;
+	private List<Utilisateur> participants;
 	
 	public Facture() {}
 
-	public Facture(String libelle, double montant) {
+	public Facture(Date date, String libelle, double montant) {
 		super();
+		this.date = date;
 		this.libelle = libelle;
 		this.montant = montant;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
 	public String getLibelle() {
 		return libelle;
 	}
@@ -39,5 +51,15 @@ public class Facture {
 	public void setLigneFacture(List<LigneFacture> ligneFacture) {
 		this.ligneFacture = ligneFacture;
 	}
+
+	public List<Utilisateur> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(List<Utilisateur> participants) {
+		this.participants = participants;
+	}
+
+
 	
 }
