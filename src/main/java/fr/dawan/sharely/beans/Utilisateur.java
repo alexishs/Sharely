@@ -43,28 +43,5 @@ public abstract class Utilisateur {
 		this.email = email;
 	}
 
-	public List<Participation> getParticipations() {
-		return participations;
-	}
 
-	public void setParticipations(List<Participation> participations) {
-		this.participations = participations;
-	}
-
-	public List<Dette> getDettesAPayer() {
-		return dettesAPayer;
-	}
-
-	public void setDettesAPayer(List<Dette> dettesAPayer) {
-		this.dettesAPayer = dettesAPayer;
-	}
-
-	public List<Dette> getDettesARecevoir() {
-		return dettesARecevoir;
-	}
-
-	public void setDettesARecevoir(List<Dette> dettesARecevoir) {
-		this.dettesARecevoir = dettesARecevoir;
-	}
-	
 }
