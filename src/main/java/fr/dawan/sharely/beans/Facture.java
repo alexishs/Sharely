@@ -14,7 +14,7 @@ public class Facture {
 	private double montant;
 	private EnumRepartition repartition;
 	private List<LigneFacture> lignesFactures; // obligatoire selon le mode de répartition choisi 
-	private List<Participation> participations;
+	private List<Participation> participations; // participation par utilisateur
 	private List<DetteSurFacture> dettesSurFacture;
 
 	

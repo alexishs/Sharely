@@ -9,9 +9,11 @@ public abstract class Utilisateur {
 	private String prenom;
 	private String email; // obligatoire si Utilisateur Réel
 	
-	private List<Participation> participations;
+	private List<Facture> factures; // part de l'utilisateur sur chaque facture
 	private List<Dette> dettesAPayer; // total, toutes factures, des dettes à payer par l'utilisateur aux autres utilisateurs
 	private List<Dette> dettesARecevoir; // total, toutes factures, des dettes à payer par les autres utilisateurs, à l'utilisateur
+	private List<Remboursement> remboursementsPayes;
+	private List<Remboursement> remboursementsRecus;
 	
 	public int getId() {
 		return id;
