@@ -81,5 +81,13 @@ public class Facture {
 	public void setDateValidation(Date dateValidation) {
 		this.dateValidation = dateValidation;
 	}
+
+	public List<DetteSurFacture> getDettesSurFacture() {
+		return dettesSurFacture;
+	}
+
+	public void setDettesSurFacture(List<DetteSurFacture> dettesSurFacture) {
+		this.dettesSurFacture = dettesSurFacture;
+	}
 	
 }

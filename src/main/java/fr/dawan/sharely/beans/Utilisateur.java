@@ -17,10 +17,6 @@ public abstract class Utilisateur {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-	
 	public String getNom() {
 		return nom;
 	}
@@ -51,6 +47,22 @@ public abstract class Utilisateur {
 
 	public void setParticipations(List<Participation> participations) {
 		this.participations = participations;
+	}
+
+	public List<Dette> getDettesAPayer() {
+		return dettesAPayer;
+	}
+
+	public void setDettesAPayer(List<Dette> dettesAPayer) {
+		this.dettesAPayer = dettesAPayer;
+	}
+
+	public List<Dette> getDettesARecevoir() {
+		return dettesARecevoir;
+	}
+
+	public void setDettesARecevoir(List<Dette> dettesARecevoir) {
+		this.dettesARecevoir = dettesARecevoir;
 	}
 	
 }

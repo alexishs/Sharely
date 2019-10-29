@@ -6,7 +6,6 @@ public class LigneFacture {
 	
 	private Facture facture;
 	private byte numerLigne;
-	
 	private String libelle;
 	private int quantite;
 	private double montant;
@@ -52,6 +51,14 @@ public class LigneFacture {
 
 	public void setFacture(Facture facture) {
 		this.facture = facture;
+	}
+
+	public List<Utilisateur> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(List<Utilisateur> participants) {
+		this.participants = participants;
 	}
 	
 }
