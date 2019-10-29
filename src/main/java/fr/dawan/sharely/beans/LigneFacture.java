@@ -1,22 +1,18 @@
 package fr.dawan.sharely.beans;
 
+import java.util.List;
+
 public class LigneFacture {
 	
-	private int id;
 	private Facture facture;
+	private byte numerLigne;
+	
 	private String libelle;
 	private int quantite;
 	private double montant;
-	private Utilisateur utilisateur;
+	private List<Utilisateur> participants; // contient le ou les participants associé(s) à la ligne de facture.
 	
 	public LigneFacture() {}
-
-	public LigneFacture(String libelle, int quantite, double montant, Utilisateur utilisateur) {
-		super();
-		this.libelle = libelle;
-		this.montant = montant;
-		this.utilisateur = utilisateur;
-	}
 
 	public String getLibelle() {
 		return libelle;
@@ -42,20 +38,12 @@ public class LigneFacture {
 		this.montant = montant;
 	}
 
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
+	public int getNumerLigne() {
+		return numerLigne;
 	}
 
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+	public void setNumerLigne(byte numerLigne) {
+		this.numerLigne = numerLigne;
 	}
 
 	public Facture getFacture() {
@@ -65,7 +53,5 @@ public class LigneFacture {
 	public void setFacture(Facture facture) {
 		this.facture = facture;
 	}
-
-
 	
 }

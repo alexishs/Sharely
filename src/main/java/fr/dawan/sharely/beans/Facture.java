@@ -9,13 +9,13 @@ public class Facture {
 
 	private int id;
 	private Date dateFacture;
-	private Date dateValidation;
+	private Date dateValidation; // à NULL par défaut. Contient la date à laquelle la facture est validée, lorsque chaque participant a validé sa participation
 	private String libelle;
 	private double montant;
 	private EnumRepartition repartition;
 	private List<LigneFacture> lignesFactures; // obligatoire selon le mode de répartition choisi 
 	private List<Participation> participations;
-	
+	private List<DetteSurFacture> dettesSurFacture;
 
 	
 	public String getLibelle() {
