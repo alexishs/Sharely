@@ -1,7 +1,8 @@
 package fr.dawan.sharely.beans;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import fr.dawan.sharely.enums.EnumRepartition;
 
@@ -12,12 +13,19 @@ public class Facture {
 	private Date dateValidation; // à NULL par défaut. Contient la date à laquelle la facture est validée, lorsque chaque participant a validé sa participation
 	private String libelle;
 	private double montant;
-	private EnumRepartition repartition;
-	private List<LigneFacture> lignesFactures; // obligatoire selon le mode de répartition choisi 
-	private List<Participation> participations; // participation par utilisateur
-	private List<DetteSurFacture> dettesSurFacture;
-
+	private EnumRepartition repartition = EnumRepartition.MANUELLE;
+	private LinkedHashSet<LigneFacture> lignesFactures = new LinkedHashSet<LigneFacture>(); // obligatoire selon le mode de répartition choisi 
+	private HashSet<Participation> participations = new HashSet<Participation>(); // participation par utilisateur
+	private HashSet<DetteSurFacture> dettesSurFacture = new HashSet<DetteSurFacture>();
 	
+	public Date getDateValidation() {
+		return dateValidation;
+	}
+
+	public void setDateValidation(Date dateValidation) {
+		this.dateValidation = dateValidation;
+	}
+
 	public String getLibelle() {
 		return libelle;
 	}
@@ -41,53 +49,14 @@ public class Facture {
 	public void setRepartition(EnumRepartition repartition) {
 		this.repartition = repartition;
 	}
-	
-	public List<LigneFacture> getLignesFactures() {
-		return lignesFactures;
-	}
 
-	public void setLignesFactures(List<LigneFacture> lignesFactures) {
-		this.lignesFactures = lignesFactures;
-	}
-
-	public List<Participation> getParticipations() {
-		return participations;
-	}
-
-	public void setParticipations(List<Participation> participations) {
-		this.participations = participations;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
+	public Facture(int id, Date dateFacture, String libelle) {
+		super();
 		this.id = id;
-	}
-
-	public Date getDateFacture() {
-		return dateFacture;
-	}
-
-	public void setDateFacture(Date dateFacture) {
 		this.dateFacture = dateFacture;
+		this.libelle = libelle;
 	}
-
-	public Date getDateValidation() {
-		return dateValidation;
-	}
-
-	public void setDateValidation(Date dateValidation) {
-		this.dateValidation = dateValidation;
-	}
-
-	public List<DetteSurFacture> getDettesSurFacture() {
-		return dettesSurFacture;
-	}
-
-	public void setDettesSurFacture(List<DetteSurFacture> dettesSurFacture) {
-		this.dettesSurFacture = dettesSurFacture;
-	}
+	
+	
 	
 }

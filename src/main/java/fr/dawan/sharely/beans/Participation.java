@@ -1,24 +1,21 @@
 package fr.dawan.sharely.beans;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 
 public class Participation {
 
-	private int id;
 	private Facture facture;
+	private Utilisateur utilisateur;
 	private double montantDu; // part de la participation
 	private double montantPaye; // montant payé le jour de la facture
 	private Date dateValidationSaisie;
-	private Utilisateur utilisateur;
-	private List<LigneFacture> lignesFactures; // non obligatoire selon méthode de répartition
+	private HashSet<LigneFacture> lignesFactures = new HashSet<LigneFacture>(); // non obligatoire selon méthode de répartition
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+	public Participation(Facture facture, Utilisateur utilisateur) {
+		super();
+		this.facture = facture;
+		this.utilisateur = utilisateur;
 	}
 
 	public double getMontantDu() {
@@ -37,30 +34,6 @@ public class Participation {
 		this.montantPaye = montantPaye;
 	}
 
-	public Facture getFacture() {
-		return facture;
-	}
-	
-	public void setFacture(Facture facture) {
-		this.facture = facture;
-	}
-	
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
-	}
-	
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
-	}
-	
-	public List<LigneFacture> getLignesFactures() {
-		return lignesFactures;
-	}
-	
-	public void setLignesFactures(List<LigneFacture> lignesFactures) {
-		this.lignesFactures = lignesFactures;
-	}
-
 	public Date getDateValidationSaisie() {
 		return dateValidationSaisie;
 	}
@@ -68,5 +41,18 @@ public class Participation {
 	public void setDateValidationSaisie(Date dateValidationSaisie) {
 		this.dateValidationSaisie = dateValidationSaisie;
 	}
+
+	public Facture getFacture() {
+		return facture;
+	}
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public HashSet<LigneFacture> getLignesFactures() {
+		return lignesFactures;
+	}  
+	
 	
 }

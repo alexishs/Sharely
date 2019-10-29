@@ -6,19 +6,9 @@ public class Dette {
 	private Utilisateur utilisateurAPayer;  // celui qui doit être remboursé
 	private double montant;
 	
-	public Utilisateur getUtilisateurPayeur() {
-		return utilisateurPayeur;
-	}
-	
-	public void setUtilisateurPayeur(Utilisateur utilisateurPayeur) {
+	public Dette(Utilisateur utilisateurPayeur, Utilisateur utilisateurAPayer) {
+		super();
 		this.utilisateurPayeur = utilisateurPayeur;
-	}
-
-	public Utilisateur getUtilisateurAPayer() {
-		return utilisateurAPayer;
-	}
-
-	public void setUtilisateurAPayer(Utilisateur utilisateurAPayer) {
 		this.utilisateurAPayer = utilisateurAPayer;
 	}
 
@@ -29,5 +19,6 @@ public class Dette {
 	public void setMontant(double montant) {
 		this.montant = montant;
 	}
+	
 	
 }

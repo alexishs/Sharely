@@ -1,26 +1,26 @@
 package fr.dawan.sharely.beans;
 
-import java.util.List;
+import java.util.HashSet;
 
 public class UtilisateurReel extends Utilisateur {
-	
+
 	private String password;
-	private List<UtilisateurFictif> utilisateursFictifs;
+	private HashSet<UtilisateurFictif> utilisateursFictifs = new HashSet<UtilisateurFictif>();
 	
+	public UtilisateurReel(int id, String nom, String prenom, String email) {
+		super(id, nom, prenom, email);
+	}
+
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public List<UtilisateurFictif> getUtilisateursFictifs() {
+
+	public HashSet<UtilisateurFictif> getUtilisateursFictifs() {
 		return utilisateursFictifs;
-	}
-	
-	public void setUtilisateursFictifs(List<UtilisateurFictif> utilisateursFictifs) {
-		this.utilisateursFictifs = utilisateursFictifs;
 	}
 	
 }

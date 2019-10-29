@@ -1,17 +1,20 @@
 package fr.dawan.sharely.beans;
 
-import java.util.List;
+import java.util.HashSet;
 
 public class LigneFacture {
 	
 	private Facture facture;
 	private byte numerLigne;
 	private String libelle;
-	private int quantite;
 	private double montant;
-	private List<Utilisateur> participants; // contient le ou les participants associé(s) à la ligne de facture.
+	private HashSet<Utilisateur> participants = new HashSet<Utilisateur>(); // contient le ou les participants associé(s) à la ligne de facture.
 	
-	public LigneFacture() {}
+	public LigneFacture(Facture facture, byte numerLigne) {
+		super();
+		this.facture = facture;
+		this.numerLigne = numerLigne;
+	}
 
 	public String getLibelle() {
 		return libelle;
@@ -21,14 +24,6 @@ public class LigneFacture {
 		this.libelle = libelle;
 	}
 
-	public int getQuantite() {
-		return quantite;
-	}
-
-	public void setQuantite(int quantite) {
-		this.quantite = quantite;
-	}
-	
 	public double getMontant() {
 		return montant;
 	}
@@ -37,28 +32,18 @@ public class LigneFacture {
 		this.montant = montant;
 	}
 
-	public int getNumerLigne() {
-		return numerLigne;
-	}
-
-	public void setNumerLigne(byte numerLigne) {
-		this.numerLigne = numerLigne;
-	}
-
 	public Facture getFacture() {
 		return facture;
 	}
 
-	public void setFacture(Facture facture) {
-		this.facture = facture;
+	public byte getNumerLigne() {
+		return numerLigne;
 	}
 
-	public List<Utilisateur> getParticipants() {
+	public HashSet<Utilisateur> getParticipants() {
 		return participants;
 	}
-
-	public void setParticipants(List<Utilisateur> participants) {
-		this.participants = participants;
-	}
+	
+	
 	
 }
