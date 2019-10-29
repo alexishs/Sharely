@@ -10,8 +10,8 @@ public abstract class Utilisateur {
 	private String email; // obligatoire si Utilisateur Réel
 	
 	private List<Participation> participations;
-	private List<Compte> dettesAPayer; // total, toutes factures, des dettes à payer par l'utilisateur aux autres utilisateurs
-	private List<Compte> dettesARecevoir; // total, toutes factures, des dettes à payer par les autres utilisateurs, à l'utilisateur
+	private List<Dette> dettesAPayer; // total, toutes factures, des dettes à payer par l'utilisateur aux autres utilisateurs
+	private List<Dette> dettesARecevoir; // total, toutes factures, des dettes à payer par les autres utilisateurs, à l'utilisateur
 	
 	public int getId() {
 		return id;

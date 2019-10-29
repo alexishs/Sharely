@@ -7,8 +7,8 @@ public class Participation {
 
 	private int id;
 	private Facture facture;
-	private double montantDu;
-	private double montantPaye;
+	private double montantDu; // part de la participation
+	private double montantPaye; // montant payé le jour de la facture
 	private Date dateValidationSaisie;
 	private Utilisateur utilisateur;
 	private List<LigneFacture> lignesFactures; // non obligatoire selon méthode de répartition
