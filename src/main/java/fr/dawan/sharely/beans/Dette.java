@@ -7,7 +7,6 @@ public class Dette {
 	private double montant;
 	
 	public Dette(Utilisateur utilisateurPayeur, Utilisateur utilisateurAPayer) {
-		super();
 		this.utilisateurPayeur = utilisateurPayeur;
 		this.utilisateurAPayer = utilisateurAPayer;
 	}

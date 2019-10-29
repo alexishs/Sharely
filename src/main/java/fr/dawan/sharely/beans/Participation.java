@@ -13,7 +13,6 @@ public class Participation {
 	private HashSet<LigneFacture> lignesFactures = new HashSet<LigneFacture>(); // non obligatoire selon méthode de répartition
 	
 	public Participation(Facture facture, Utilisateur utilisateur) {
-		super();
 		this.facture = facture;
 		this.utilisateur = utilisateur;
 	}

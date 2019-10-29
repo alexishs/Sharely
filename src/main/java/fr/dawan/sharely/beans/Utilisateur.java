@@ -1,7 +1,10 @@
 package fr.dawan.sharely.beans;
 
+import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
+
+import fr.dawan.sharely.ErreursMetier;
+import fr.dawan.sharely.enums.EnumErreurMetier;
 
 public abstract class Utilisateur {
 	
@@ -70,8 +73,5 @@ public abstract class Utilisateur {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
-
 
 }
