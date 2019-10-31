@@ -6,6 +6,7 @@ public class Dette {
 	private Utilisateur utilisateurAPayer;  // celui qui doit être remboursé
 	private double montant;
 	
+	
 	public Dette(Utilisateur utilisateurPayeur, Utilisateur utilisateurAPayer) {
 		this.utilisateurPayeur = utilisateurPayeur;
 		this.utilisateurAPayer = utilisateurAPayer;
