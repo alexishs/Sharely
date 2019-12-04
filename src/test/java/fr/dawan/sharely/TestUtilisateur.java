@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.beans.LigneFacture;
+import fr.dawan.sharely.beans.Utilisateur;
 import fr.dawan.sharely.beans.UtilisateurReel;
 import fr.dawan.sharely.dao.FactureDAO;
 import fr.dawan.sharely.dao.GenericDAO;
@@ -61,8 +62,8 @@ public class TestUtilisateur {
 
 	@After
 	public void tearDown() throws Exception {
-		//GenericDAO.delete(Facture.class, idFacture);
-		//GenericDAO.delete(Utilisateur.class, idUser);
+		GenericDAO.delete(Facture.class, idFacture);
+		GenericDAO.delete(Utilisateur.class, idUser);
 	}
 
 	@Test
