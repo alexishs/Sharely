@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "Participation")
 public class Participation extends DbObject{
 
-	@ManyToOne( fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Facture facture;
 	
 	@OneToOne(fetch=FetchType.EAGER)

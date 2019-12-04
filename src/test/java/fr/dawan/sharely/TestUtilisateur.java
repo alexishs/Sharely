@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.beans.LigneFacture;
+import fr.dawan.sharely.beans.Participation;
 import fr.dawan.sharely.beans.Utilisateur;
 import fr.dawan.sharely.beans.UtilisateurReel;
 import fr.dawan.sharely.dao.FactureDAO;
@@ -47,9 +48,14 @@ public class TestUtilisateur {
 		FactureDAO.create(facture);
 		idFacture = facture.getId();
 		
-		user.addFacture(facture);
 		GenericDAO.create(user);
 		idUser = user.getId();
+
+		Participation participation = new Participation(facture, user);
+		participation.setMontantDu(10);
+		participation.setMontantPaye(3);
+		GenericDAO.create(participation);
+				
 	}
 
 	@AfterClass
