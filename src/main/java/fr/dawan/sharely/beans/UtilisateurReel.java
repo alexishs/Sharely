@@ -11,6 +11,10 @@ public class UtilisateurReel extends Utilisateur {
 		
 	public UtilisateurReel() {}
 
+	public UtilisateurReel(String nom, String prenom, String email) {
+		super(nom, prenom, email);
+	}
+	
 	public String getPassword() {
 		return password;
 	}

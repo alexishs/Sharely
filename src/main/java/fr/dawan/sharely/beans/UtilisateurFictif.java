@@ -9,4 +9,7 @@ public class UtilisateurFictif extends Utilisateur {
 		
 	public UtilisateurFictif() {}
 
+	public UtilisateurFictif(String nom, String prenom, String email) {
+		super(nom, prenom, email);
+	}
 }
