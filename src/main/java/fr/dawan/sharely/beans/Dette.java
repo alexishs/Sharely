@@ -24,6 +24,7 @@ public class Dette extends DbObject{
 	private double montant;
 	
 	public Dette() {}
+
 	
 	public Dette(Utilisateur utilisateurPayeur, Utilisateur utilisateurAPayer) {
 		this.setUtilisateurPayeur(utilisateurPayeur);
