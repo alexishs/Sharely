@@ -27,7 +27,6 @@ public class LigneFacture extends DbObject{
 //	private Set<Utilisateur> participants = new HashSet<Utilisateur>(); // contient le ou les participants associé(s) à la ligne de facture.
 	private Set<Participation> participants = new HashSet<Participation>(); // contient le ou les participants associé(s) à la ligne de facture.
 	
-	
 	public LigneFacture() {}
 	
 	public LigneFacture(String libelle, double montant) {

@@ -29,6 +29,7 @@ public class TestUtilisateur {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		System.out.println("INITIALISATION BEFORE CLASS");
+		
 		UtilisateurReel user = new UtilisateurReel(USER_NOM, USER_PRENOM, USER_EMAIL);
 		
 		Facture facture = new Facture(new Date(), "Restaurant la Houblonnière", 35);
@@ -62,13 +63,14 @@ public class TestUtilisateur {
 
 	@After
 	public void tearDown() throws Exception {
-		GenericDAO.delete(Facture.class, idFacture);
-		GenericDAO.delete(Utilisateur.class, idUser);
+//		GenericDAO.delete(Facture.class, idFacture);
+//		GenericDAO.delete(Utilisateur.class, idUser);
 	}
 
 	@Test
 	public void testUtilisateur() {
-		fail("Not yet implemented");
+		Utilisateur u = GenericDAO.findByField(Utilisateur.class,"email", USER_EMAIL);
+		System.out.println(u.toString());
 	}
 
 	@Test

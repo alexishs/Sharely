@@ -32,6 +32,8 @@ public class Participation extends DbObject{
 	@ManyToMany(fetch=FetchType.EAGER)
 	private Set<LigneFacture> lignesFactures = new HashSet<LigneFacture>(); // non obligatoire selon méthode de répartition
 	
+	public Participation() {}
+	
 	public Participation(Facture facture, Utilisateur utilisateur) {
 		this.facture = facture;
 		this.utilisateur = utilisateur;

@@ -8,6 +8,12 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
+
+import org.springframework.util.CollectionUtils;
 
 import fr.dawan.sharely.beans.DbObject;
 
@@ -52,6 +58,32 @@ public class GenericDAO {
 		}
 
 		return entity;
+	}
+	
+	public static <T extends DbObject> T findByField(Class<T> clazz, String field, String fieldValue)
+	{
+		EntityManager entityManager = createEntityManager();
+
+	    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+	    CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(clazz);
+	    Root<T> root = criteriaQuery.from(clazz);
+	    criteriaQuery.select(root);
+
+	    ParameterExpression<String> params = criteriaBuilder.parameter(String.class);
+	    criteriaQuery.where(criteriaBuilder.equal(root.get(field), params));
+
+	    TypedQuery<T> query = entityManager.createQuery(criteriaQuery);
+	    query.setParameter(params, fieldValue);
+
+	    List<T> queryResult = query.getResultList();
+
+	    T returnObject = null;
+
+	    if (!CollectionUtils.isEmpty(queryResult)) {
+	        returnObject = queryResult.get(0);
+	    }
+
+	    return returnObject;
 	}
 
 	public static <T extends DbObject> void update(T entity) {

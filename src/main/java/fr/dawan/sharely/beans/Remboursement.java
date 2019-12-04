@@ -12,6 +12,8 @@ public class Remboursement extends Dette {
 	private Date dateRemboursement; // date effective du remboursement initié par le payeur
 	private Date dateAccuseReception; // null par défaut, date à laquelle le payé valide le paiement
 	
+	public Remboursement() {}
+	
 	public Remboursement(Utilisateur utilisateurPayeur, Utilisateur utilisateurAPayer, Date dateRemboursement) {
 		super(utilisateurPayeur, utilisateurAPayer);
 		this.dateRemboursement = dateRemboursement;
