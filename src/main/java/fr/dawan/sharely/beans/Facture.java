@@ -3,40 +3,50 @@ package fr.dawan.sharely.beans;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
-import fr.dawan.sharely.ErreursMetier;
-import fr.dawan.sharely.enums.EnumErreurMetier;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import fr.dawan.sharely.enums.EnumRepartition;
 
-public class Facture {
+@Entity
+@Table(name="Facture")
+public class Facture extends DbObject{
 
-	private int id;
 	private Date dateFacture;
 	private Date dateValidation; // à NULL par défaut. Contient la date à laquelle la facture est validée, lorsque chaque participant a validé sa participation
 	private String libelle;
+	
+	@Column(scale=2, precision=2)
 	private double montant;
 	
+	@Enumerated(EnumType.STRING)
 	private EnumRepartition repartition = EnumRepartition.MANUELLE;
-	private LinkedHashSet<LigneFacture> lignesFactures = new LinkedHashSet<LigneFacture>(); // obligatoire selon le mode de répartition choisi 
-	private HashSet<Participation> participations = new HashSet<Participation>(); // participation par utilisateur
-	private HashSet<DetteSurFacture> dettesSurFacture = new HashSet<DetteSurFacture>();
 	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "facture")
+	private Set<LigneFacture> lignesFactures = new LinkedHashSet<LigneFacture>(); // obligatoire selon le mode de répartition choisi 
 	
-	public Facture(int id, Date dateFacture, String libelle) {
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "facture")
+	private Set<Participation> participations = new HashSet<Participation>(); // participation par utilisateur
+	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "facture")
+	private Set<DetteSurFacture> dettesSurFacture = new HashSet<DetteSurFacture>();
+	
+	public Facture() {}
+	
+	public Facture(Date dateFacture, String libelle) {
 		super();
-		this.id = id;
-		this.dateFacture = dateFacture;
+		this.setDateFacture(dateFacture);
 		this.libelle = libelle;
 	}
 	
-	public Facture creerNouvelleFacture(Date dateFacture, String libelle, ErreursMetier erreurs) {
-		Facture nouvelleFacture = null;
-		erreurs = new ErreursMetier()
-				.ajouterErreur(EnumErreurMetier.DATE_INVALIDE, "Date de nouvelle facture invalide")
-				.ajouterErreur(EnumErreurMetier.LIBELLE_INVALIDE, "Le libellé de facture doit être renseigné");
-		int id = 0;
-		return new Facture(id, dateFacture, libelle);
-	}
 	/*
 	 * crée une facture, l'ajoute à la liste des factures.
 	 * les params doivent être valides
@@ -73,6 +83,38 @@ public class Facture {
 
 	public void setRepartition(EnumRepartition repartition) {
 		this.repartition = repartition;
+	}
+
+	public Date getDateFacture() {
+		return dateFacture;
+	}
+
+	public void setDateFacture(Date dateFacture) {
+		this.dateFacture = dateFacture;
+	}
+
+	public Set<LigneFacture> getLignesFactures() {
+		return lignesFactures;
+	}
+
+	public void setLignesFactures(LinkedHashSet<LigneFacture> lignesFactures) {
+		this.lignesFactures = lignesFactures;
+	}
+
+	public Set<Participation> getParticipations() {
+		return participations;
+	}
+
+	public void setParticipations(HashSet<Participation> participations) {
+		this.participations = participations;
+	}
+
+	public Set<DetteSurFacture> getDettesSurFacture() {
+		return dettesSurFacture;
+	}
+
+	public void setDettesSurFacture(HashSet<DetteSurFacture> dettesSurFacture) {
+		this.dettesSurFacture = dettesSurFacture;
 	}
 
 

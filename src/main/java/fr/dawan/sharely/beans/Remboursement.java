@@ -2,6 +2,11 @@ package fr.dawan.sharely.beans;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Remboursement")
 public class Remboursement extends Dette {
 	
 	private Date dateRemboursement; // date effective du remboursement initié par le payeur

@@ -1,14 +1,32 @@
 package fr.dawan.sharely.beans;
 
 import java.util.HashSet;
+import java.util.Set;
 
-public class LigneFacture {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "LigneFacture")
+public class LigneFacture extends DbObject{
 	
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Facture facture;
+	
 	private byte numerLigne;
 	private String libelle;
+	
+	@Column(scale=2, precision=2)
 	private double montant;
-	private HashSet<Utilisateur> participants = new HashSet<Utilisateur>(); // contient le ou les participants associé(s) à la ligne de facture.
+	
+	@OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
+//	private Set<Utilisateur> participants = new HashSet<Utilisateur>(); // contient le ou les participants associé(s) à la ligne de facture.
+	private Set<Participation> participants = new HashSet<Participation>(); // contient le ou les participants associé(s) à la ligne de facture.
 	
 	public LigneFacture(Facture facture, byte numerLigne) {
 		super();
@@ -40,7 +58,7 @@ public class LigneFacture {
 		return numerLigne;
 	}
 
-	public HashSet<Utilisateur> getParticipants() {
+	public Set<Participation> getParticipants() {
 		return participants;
 	}
 	

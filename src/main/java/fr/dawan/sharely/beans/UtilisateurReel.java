@@ -1,14 +1,16 @@
 package fr.dawan.sharely.beans;
 
-import java.util.HashSet;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "UtilisateurReel")
 public class UtilisateurReel extends Utilisateur {
 
 	private String password;
-	private HashSet<UtilisateurFictif> utilisateursFictifs = new HashSet<UtilisateurFictif>();
-	
-	public UtilisateurReel(int id, String nom, String prenom, String email) {
-		super(id, nom, prenom, email);
+		
+	public UtilisateurReel(String nom, String prenom, String email) {
+		super(nom, prenom, email);
 	}
 
 	public String getPassword() {
@@ -19,8 +21,4 @@ public class UtilisateurReel extends Utilisateur {
 		this.password = password;
 	}
 
-	public HashSet<UtilisateurFictif> getUtilisateursFictifs() {
-		return utilisateursFictifs;
-	}
-	
 }

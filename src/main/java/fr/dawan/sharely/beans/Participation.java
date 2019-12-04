@@ -2,15 +2,35 @@ package fr.dawan.sharely.beans;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
-public class Participation {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Participation")
+public class Participation extends DbObject{
+
+	@ManyToOne( fetch=FetchType.EAGER)
 	private Facture facture;
+	
+	@OneToOne(fetch=FetchType.EAGER)
 	private Utilisateur utilisateur;
+	
+	@Column(scale=2, precision=2)
 	private double montantDu; // part de la participation
+	
+	@Column(scale=2, precision=2)
 	private double montantPaye; // montant payé le jour de la facture
 	private Date dateValidationSaisie;
-	private HashSet<LigneFacture> lignesFactures = new HashSet<LigneFacture>(); // non obligatoire selon méthode de répartition
+	
+	@ManyToMany(fetch=FetchType.EAGER)
+	private Set<LigneFacture> lignesFactures = new HashSet<LigneFacture>(); // non obligatoire selon méthode de répartition
 	
 	public Participation(Facture facture, Utilisateur utilisateur) {
 		this.facture = facture;
@@ -49,7 +69,7 @@ public class Participation {
 		return utilisateur;
 	}
 
-	public HashSet<LigneFacture> getLignesFactures() {
+	public Set<LigneFacture> getLignesFactures() {
 		return lignesFactures;
 	}  
 	

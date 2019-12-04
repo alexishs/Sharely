@@ -1,34 +1,52 @@
 package fr.dawan.sharely.beans;
 
-import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
-import fr.dawan.sharely.ErreursMetier;
-import fr.dawan.sharely.enums.EnumErreurMetier;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
-public abstract class Utilisateur {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class Utilisateur extends DbObject{
 	
-	private int id;
 	private String nom;
 	private String prenom;
 	private String email; // obligatoire si Utilisateur Réel
 	
-	private HashSet<Facture> factures = new HashSet<Facture>(); // part de l'utilisateur sur chaque facture
-	private HashSet<Dette> dettesAPayer = new HashSet<Dette>(); // total, toutes factures, des dettes à payer par l'utilisateur aux autres utilisateurs
-	private HashSet<Dette> dettesARecevoir = new HashSet<Dette>(); // total, toutes factures, des dettes à payer par les autres utilisateurs, à l'utilisateur
-	private HashSet<Remboursement> remboursementsPayes = new HashSet<Remboursement>();
-	private HashSet<Remboursement> remboursementsRecus = new HashSet<Remboursement>();
+	@ManyToMany
+	private Set<Facture> factures = new HashSet<Facture>(); // part de l'utilisateur sur chaque facture
 	
-	public Utilisateur(int id, String nom, String prenom, String email) {
-		this.id = id;
+	@OneToMany
+	private Set<Dette> dettes;
+	
+	@Transient
+	private Set<Dette> dettesAPayer = new HashSet<Dette>(); // total, toutes factures, des dettes à payer par l'utilisateur aux autres utilisateurs
+	
+	@Transient
+	private Set<Dette> dettesARecevoir = new HashSet<Dette>(); // total, toutes factures, des dettes à payer par les autres utilisateurs, à l'utilisateur
+	
+	@OneToMany
+	private Set<Remboursement> remboursements;
+	
+	@Transient
+	private Set<Remboursement> remboursementsPayes = new HashSet<Remboursement>();
+	
+	@Transient
+	private Set<Remboursement> remboursementsRecus = new HashSet<Remboursement>();
+	
+	public Utilisateur() {}
+	
+	public Utilisateur(String nom, String prenom, String email) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
 	}
-	
-	public int getId() {
-		return id;
-	}
+
 
 	public String getNom() {
 		return nom;
@@ -42,23 +60,23 @@ public abstract class Utilisateur {
 		return email;
 	}
 
-	public HashSet<Facture> getFactures() {
+	public Set<Facture> getFactures() {
 		return factures;
 	}
 
-	public HashSet<Dette> getDettesAPayer() {
+	public Set<Dette> getDettesAPayer() {
 		return dettesAPayer;
 	}
 
-	public HashSet<Dette> getDettesARecevoir() {
+	public Set<Dette> getDettesARecevoir() {
 		return dettesARecevoir;
 	}
 
-	public HashSet<Remboursement> getRemboursementsPayes() {
+	public Set<Remboursement> getRemboursementsPayes() {
 		return remboursementsPayes;
 	}
 
-	public HashSet<Remboursement> getRemboursementsRecus() {
+	public Set<Remboursement> getRemboursementsRecus() {
 		return remboursementsRecus;
 	}
 
