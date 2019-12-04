@@ -1,10 +1,9 @@
 package fr.dawan.sharely.beans;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -19,6 +18,8 @@ public abstract class Utilisateur extends DbObject{
 	
 	private String nom;
 	private String prenom;
+	
+	@Column(unique = true)
 	private String email; // obligatoire si Utilisateur Réel
 	
 	@ManyToMany
