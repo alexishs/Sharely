@@ -1,6 +1,12 @@
 package fr.dawan.sharely.dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -187,9 +193,36 @@ public class GenericDAO {
 		transaction.commit();
 		em.close();
 	}
+	
+	private static Map<String, String> lireInfosConnexionMySql(){
+		Map<String, String> mapInfos = null;
+        try (InputStream inputStream = new FileInputStream("credentials.data")) {           
+        	Properties proprietesFichier = new Properties();
+        	proprietesFichier.load(inputStream);
+        	mapInfos = new HashMap<String, String>();
+        	mapInfos.put("javax.persistence.jdbc.user", proprietesFichier.getProperty("user"));
+        	mapInfos.put("javax.persistence.jdbc.password", proprietesFichier.getProperty("password"));
+        } catch (IOException ex) {
+            // on ne fait rien. Le fichier peut ne pas exister.
+        	// Dans ce cas, on renvoie null
+        	mapInfos = null;
+        }
+        return mapInfos;
+	}
 
 	public static EntityManager createEntityManager() {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("sharely");
+		
+		Map<String, String> infosUtilisateurMySql = lireInfosConnexionMySql();
+		EntityManagerFactory factory;
+		
+		// javax.persistence.jdbc.user
+		// javax.persistence.jdbc.password
+		if(infosUtilisateurMySql==null) {
+			factory = Persistence.createEntityManagerFactory("sharely");
+		}else {
+			factory = Persistence.createEntityManagerFactory("sharely",infosUtilisateurMySql);
+		}
+		
 		EntityManager entityManager = factory.createEntityManager();
 		return entityManager;
 	}
