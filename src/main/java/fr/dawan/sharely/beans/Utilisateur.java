@@ -23,7 +23,7 @@ public abstract class Utilisateur extends DbObject{
 	private String email; // obligatoire si Utilisateur Réel
 	
 	@ManyToMany
-	private Set<Facture> factures = new HashSet<Facture>(); // part de l'utilisateur sur chaque facture
+	private Set<Participation> participations = new HashSet<Participation>(); // part de l'utilisateur sur chaque facture. Une seule participation si utilisateur fictif.
 
 	@OneToMany
 	private Set<Dette> dettes;
@@ -64,18 +64,18 @@ public abstract class Utilisateur extends DbObject{
 		return email;
 	}
 
-	public Set<Facture> getFactures(){
-		return factures;
+	public Set<Participation> getParticipations(){
+		return participations;
 	}
 	
-	public void addFacture(Facture facture) {
-		if (!factures.contains(facture) && facture != null) {
-			this.factures.add(facture);
+	public void addParticipation(Participation participation) {
+		if (!participations.contains(participation) && participation != null) {
+			this.participations.add(participation);
 		}
 	}
 
-	public void removeFacture(Facture facture) {
-		this.factures.remove(facture);
+	public void removeParticipation(Participation participation) {
+		this.participations.remove(participation);
 	}
 	
 	public Set<Dette> getDettes(){
