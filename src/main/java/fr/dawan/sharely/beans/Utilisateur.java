@@ -1,6 +1,8 @@
 package fr.dawan.sharely.beans;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -60,24 +63,26 @@ public abstract class Utilisateur extends DbObject{
 		return email;
 	}
 
-	public Set<Facture> getFactures() {
+	public Set<Facture> getFactures(){
 		return factures;
 	}
-
-	public Set<Dette> getDettesAPayer() {
-		return dettesAPayer;
+	
+	public void addFacture(Facture facture) {
+		if (!factures.contains(facture) && facture != null) {
+			this.factures.add(facture);
+		}
 	}
 
-	public Set<Dette> getDettesARecevoir() {
-		return dettesARecevoir;
+	public void removeFacture(Facture facture) {
+		this.factures.remove(facture);
 	}
-
-	public Set<Remboursement> getRemboursementsPayes() {
-		return remboursementsPayes;
+	
+	public Set<Dette> getDettes(){
+		return dettes;
 	}
-
-	public Set<Remboursement> getRemboursementsRecus() {
-		return remboursementsRecus;
+	
+	public Set<Remboursement> getRemboursements(){
+		return remboursements;
 	}
 
 	public void setNom(String nom) {

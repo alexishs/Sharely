@@ -2,12 +2,15 @@ package fr.dawan.sharely;
 
 import static org.junit.Assert.fail;
 
+import java.util.Date;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.beans.UtilisateurReel;
 import fr.dawan.sharely.dao.GenericDAO;
 
@@ -22,6 +25,11 @@ public class TestUtilisateur {
 	public static void setUpBeforeClass() throws Exception {
 		System.out.println("INITIALISATION BEFORE CLASS");
 		UtilisateurReel user = new UtilisateurReel(USER_NOM, USER_PRENOM, USER_EMAIL);
+		
+		Facture facture = new Facture(new Date(), "Restaurant la Houblonnière");
+		GenericDAO.create(facture);
+		
+		user.addFacture(facture);
 		
 		GenericDAO.create(user);
 	}
