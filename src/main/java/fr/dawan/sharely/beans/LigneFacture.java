@@ -52,6 +52,10 @@ public class LigneFacture extends DbObject{
 	public Facture getFacture() {
 		return facture;
 	}
+	
+	public void setFacture(Facture facture) {
+		this.facture = facture;
+	}
 
 	public void addParticipant(Participation p) {
 		participants.add(p);

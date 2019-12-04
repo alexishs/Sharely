@@ -31,7 +31,7 @@ public class Facture extends DbObject{
 	@Column(name = "repartition")
 	private EnumRepartition repartition = EnumRepartition.MANUELLE;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "facture")
+	@OneToMany(cascade=CascadeType.REMOVE, fetch=FetchType.EAGER, mappedBy = "facture")
 	private Set<LigneFacture> lignesFactures = new LinkedHashSet<LigneFacture>(); // obligatoire selon le mode de répartition choisi 
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "facture")
@@ -42,10 +42,11 @@ public class Facture extends DbObject{
 	
 	public Facture() {}
 	
-	public Facture(Date dateFacture, String libelle) {
+	public Facture(Date dateFacture, String libelle, double montant) {
 		super();
 		this.setDateFacture(dateFacture);
 		this.libelle = libelle;
+		this.montant = montant;
 	}
 	
 	/*
