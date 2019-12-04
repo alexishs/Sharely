@@ -20,7 +20,7 @@ public abstract class Utilisateur extends DbObject{
 	
 	@ManyToMany
 	private Set<Facture> factures = new HashSet<Facture>(); // part de l'utilisateur sur chaque facture
-	
+
 	@OneToMany
 	private Set<Dette> dettes;
 	
