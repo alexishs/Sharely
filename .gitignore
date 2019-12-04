@@ -16,6 +16,12 @@ spring-test/test-output/
 argfile*
 activemq-data/
 
+#fichier d'ID de connexion à MySql
+# Format :
+# user=toto
+# password=azerty
+credentials.data
+
 classes/
 /build
 buildSrc/build
