@@ -18,7 +18,6 @@ public class LigneFacture extends DbObject{
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Facture facture;
 	
-	private byte numerLigne;
 	private String libelle;
 	
 	@Column(scale=2, precision=2)
@@ -28,10 +27,10 @@ public class LigneFacture extends DbObject{
 //	private Set<Utilisateur> participants = new HashSet<Utilisateur>(); // contient le ou les participants associé(s) à la ligne de facture.
 	private Set<Participation> participants = new HashSet<Participation>(); // contient le ou les participants associé(s) à la ligne de facture.
 	
-	public LigneFacture(Facture facture, byte numerLigne) {
+	public LigneFacture(String libelle, double montant) {
 		super();
-		this.facture = facture;
-		this.numerLigne = numerLigne;
+		this.libelle = libelle;
+		this.montant = montant;
 	}
 
 	public String getLibelle() {
@@ -54,14 +53,13 @@ public class LigneFacture extends DbObject{
 		return facture;
 	}
 
-	public byte getNumerLigne() {
-		return numerLigne;
+	public void addParticipant(Participation p) {
+		participants.add(p);
 	}
-
+	
 	public Set<Participation> getParticipants() {
 		return participants;
 	}
-	
 	
 	
 }

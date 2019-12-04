@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fr.dawan.sharely.beans.Facture;
+import fr.dawan.sharely.beans.LigneFacture;
 import fr.dawan.sharely.beans.UtilisateurReel;
 import fr.dawan.sharely.dao.GenericDAO;
 
@@ -27,10 +28,24 @@ public class TestUtilisateur {
 		UtilisateurReel user = new UtilisateurReel(USER_NOM, USER_PRENOM, USER_EMAIL);
 		
 		Facture facture = new Facture(new Date(), "Restaurant la Houblonnière");
+		LigneFacture lf1 = new LigneFacture("Bouteille de coca 2L", 5.90);
+		LigneFacture lf2 = new LigneFacture("Pizza royale", 15.90);
+		LigneFacture lf3 = new LigneFacture("Penne Di Bufala", 11.50);
+		LigneFacture lf4 = new LigneFacture("Salade Vegan", 7.40);
+		
+		GenericDAO.create(lf1);
+		GenericDAO.create(lf2);
+		GenericDAO.create(lf3);
+		GenericDAO.create(lf4);
+
+		facture.addLigneFacture(lf1);
+		facture.addLigneFacture(lf2);
+		facture.addLigneFacture(lf3);
+		facture.addLigneFacture(lf4);
+
 		GenericDAO.create(facture);
 		
 		user.addFacture(facture);
-		
 		GenericDAO.create(user);
 	}
 

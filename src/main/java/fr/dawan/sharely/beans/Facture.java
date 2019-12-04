@@ -28,6 +28,7 @@ public class Facture extends DbObject{
 	private double montant;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name = "repartition")
 	private EnumRepartition repartition = EnumRepartition.MANUELLE;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "facture")
@@ -97,8 +98,12 @@ public class Facture extends DbObject{
 		return lignesFactures;
 	}
 
-	public void setLignesFactures(LinkedHashSet<LigneFacture> lignesFactures) {
-		this.lignesFactures = lignesFactures;
+	public void addLigneFacture(LigneFacture lf) {
+		lignesFactures.add(lf);
+	}
+	
+	public void removeLigneFacture(LigneFacture lf) {
+		lignesFactures.remove(lf);
 	}
 
 	public Set<Participation> getParticipations() {
