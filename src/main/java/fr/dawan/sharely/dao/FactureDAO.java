@@ -8,7 +8,7 @@ import javax.persistence.Persistence;
 import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.beans.LigneFacture;
 
-public class FactureDAO {
+public class FactureDAO extends GenericDAO {
 
 	public static void create(Facture facture) {
 		if (facture.getId() == 0) {
@@ -42,11 +42,5 @@ public class FactureDAO {
 				entityManager.close();
 			}
 		}
-	}
-
-	public static EntityManager createEntityManager() {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("sharely");
-		EntityManager entityManager = factory.createEntityManager();
-		return entityManager;
 	}
 }
