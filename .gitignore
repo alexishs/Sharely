@@ -22,6 +22,9 @@ activemq-data/
 # password=azerty
 credentials.data
 
+#fichier de pid de tomcat losrque celui-ci est démarré
+.attach_pid*
+
 classes/
 /build
 buildSrc/build
