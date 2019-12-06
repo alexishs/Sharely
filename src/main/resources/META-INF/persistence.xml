@@ -7,23 +7,23 @@
 		transaction-type="RESOURCE_LOCAL">
 		
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		
 		<class>fr.dawan.sharely.beans.Dette</class>
 		<class>fr.dawan.sharely.beans.DetteSurFacture</class>
 		<class>fr.dawan.sharely.beans.Facture</class>
 		<class>fr.dawan.sharely.beans.LigneFacture</class>
 		<class>fr.dawan.sharely.beans.Participation</class>
 		<class>fr.dawan.sharely.beans.Remboursement</class>
+		<class>fr.dawan.sharely.beans.Utilisateur</class>
 		<class>fr.dawan.sharely.beans.UtilisateurFictif</class>
 		<class>fr.dawan.sharely.beans.UtilisateurReel</class>
 
 		<properties>
 			<!-- PROPRIETES JDBC -->
 			<!-- URL De votre base de données -->
-			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://localhost:3306/sharely" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sharely" />
 			<!-- Driver -->
-			<property name="javax.persistence.jdbc.driver"
-				value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<!-- Login -->
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<!-- password -->

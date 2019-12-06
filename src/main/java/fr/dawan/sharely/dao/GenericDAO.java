@@ -215,8 +215,6 @@ public class GenericDAO {
 		Map<String, String> infosUtilisateurMySql = lireInfosConnexionMySql();
 		EntityManagerFactory factory;
 		
-		// javax.persistence.jdbc.user
-		// javax.persistence.jdbc.password
 		if(infosUtilisateurMySql==null) {
 			factory = Persistence.createEntityManagerFactory("sharely");
 		}else {

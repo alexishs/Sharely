@@ -3,24 +3,22 @@ package fr.dawan.sharely.beans;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "Utilisateur")
 public abstract class Utilisateur extends DbObject{
 	
 	private String nom;
 	private String prenom;
-	
-	@Column(unique = true)
-	private String email; // obligatoire si Utilisateur Réel
 	
 	@ManyToMany
 	private Set<Participation> participations = new HashSet<Participation>(); // part de l'utilisateur sur chaque facture. Une seule participation si utilisateur fictif.
@@ -48,7 +46,7 @@ public abstract class Utilisateur extends DbObject{
 	public Utilisateur(String nom, String prenom, String email) {
 		this.nom = nom;
 		this.prenom = prenom;
-		this.email = email;
+		this.setEmail(email);
 	}
 
 
@@ -60,9 +58,8 @@ public abstract class Utilisateur extends DbObject{
 		return prenom;
 	}
 
-	public String getEmail() {
-		return email;
-	}
+	public abstract String getEmail();
+	public abstract void setEmail(String email);
 
 	public Set<Participation> getParticipations(){
 		return participations;
@@ -92,10 +89,6 @@ public abstract class Utilisateur extends DbObject{
 
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 }

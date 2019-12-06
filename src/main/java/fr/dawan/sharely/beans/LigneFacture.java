@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,9 +24,9 @@ public class LigneFacture extends DbObject{
 	@Column(scale=2, precision=2)
 	private double montant;
 	
-	@OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
-//	private Set<Utilisateur> participants = new HashSet<Utilisateur>(); // contient le ou les participants associé(s) à la ligne de facture.
-	private Set<Participation> participants = new HashSet<Participation>(); // contient le ou les participants associé(s) à la ligne de facture.
+	@ManyToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
+	// temp @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy = "LigneFacture")
+	private Set<Participation> participations = new HashSet<Participation>(); // contient la ou les participations associée(s) à la ligne de facture.
 	
 	public LigneFacture() {}
 	
@@ -60,11 +61,11 @@ public class LigneFacture extends DbObject{
 	}
 
 	public void addParticipant(Participation p) {
-		participants.add(p);
+		participations.add(p);
 	}
 	
 	public Set<Participation> getParticipants() {
-		return participants;
+		return participations;
 	}
 	
 	

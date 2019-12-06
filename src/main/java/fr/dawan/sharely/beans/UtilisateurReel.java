@@ -1,12 +1,15 @@
 package fr.dawan.sharely.beans;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 @Entity
-@Table(name = "UtilisateurReel")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class UtilisateurReel extends Utilisateur {
-
+	@Column(unique = true)
+	private String email; // obligatoire si Utilisateur Réel
 	private String password;
 		
 	public UtilisateurReel() {}
@@ -21,6 +24,16 @@ public class UtilisateurReel extends Utilisateur {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Override
+	public String getEmail() {
+		return email;
+	}
+
+	@Override
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

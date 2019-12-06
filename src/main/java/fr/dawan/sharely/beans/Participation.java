@@ -29,7 +29,8 @@ public class Participation extends DbObject{
 	private double montantPaye; // montant payé le jour de la facture
 	private Date dateValidationSaisie;
 	
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER, mappedBy = "participations")
+	// temp @ManyToMany(fetch=FetchType.EAGER, mappedBy = "LigneFacture")
 	private Set<LigneFacture> lignesFactures = new HashSet<LigneFacture>(); // non obligatoire selon méthode de répartition
 	
 	public Participation() {}
