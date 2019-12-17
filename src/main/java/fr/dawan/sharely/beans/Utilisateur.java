@@ -12,6 +12,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 
+/*
+ * pour empêcher certaines propriétés d'être exportées en JSON, voir https://github.com/FasterXML/jackson-annotations
+ */
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "Utilisateur")

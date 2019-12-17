@@ -1,7 +1,10 @@
 package fr.dawan.sharely.services;
 
+import org.springframework.stereotype.Service;
+
 import fr.dawan.sharely.beans.UtilisateurReel;
 
+@Service
 public class ServiceUtilisateur {
 	
 	/*
