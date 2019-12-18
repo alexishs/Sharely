@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServiceSysteme {
 
-	/*
-	 * Suppression automatique des comptes créés mais non validés par URL envoyée par mail à l'inscription.
+	/**
+	 * Suppression automatique des comptes créés mais jamais validés.
 	 */
 	public void supprimerComptesNonValides() {
 		
