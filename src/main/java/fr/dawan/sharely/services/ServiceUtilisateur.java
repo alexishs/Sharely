@@ -30,7 +30,6 @@ public class ServiceUtilisateur {
 	 * @return boolean
 	 */
 	public boolean validationInscriptionUtilisateur(UtilisateurReel utilisateur,StringBuilder messageErreur) {
-		
 		return false;
 	}
 
@@ -45,13 +44,13 @@ public class ServiceUtilisateur {
 	public UtilisateurReel connexion(String email,String motDePasse,StringBuilder messageErreur) {
 		System.out.println("Mdp encrypté : "+BCrypt.hashpw(motDePasse, BCrypt.gensalt()));
 		UtilisateurReel utilisateur = GenericDAO.findByField(UtilisateurReel.class, "email", email);
-		if(utilisateur==null) {
-			messageErreur.append("Utilisateur inconnu");
-		}else {
+		if(utilisateur != null) {
 			if(!BCrypt.checkpw(motDePasse,utilisateur.getPassword())) {
-				messageErreur.append("Mot de passe invalide");
 				utilisateur = null;
 			}
+		}
+		if(utilisateur == null) {
+			messageErreur.append("Utilisateur ou mot de passe invalide");
 		}
 		return utilisateur;
 	}
