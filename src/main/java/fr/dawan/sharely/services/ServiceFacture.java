@@ -22,10 +22,10 @@ public class ServiceFacture {
 	 * @param libelle
 	 * @param montant
 	 * @param premierParticipant
-	 * @param messageErreur
+	 * @param messageErreur (paramètre de retour)
 	 * @return Facture
 	 */
-	public Facture creerNouvelleFacture(String libelle, double montant, UtilisateurReel premierParticipant, String messageErreur) {
+	public Facture creerNouvelleFacture(String libelle, double montant, UtilisateurReel premierParticipant, StringBuilder messageErreur) {
 		return null;
 	}
 	
@@ -35,10 +35,10 @@ public class ServiceFacture {
 	 * En cas d'echec, retourne null. Le paramètre messageErreur peut contenir un message pour l'utilisateur.
 	 * @param idFacture
 	 * @param utilisateurLecteur
-	 * @param messageErreur
+	 * @param messageErreur (paramètre de retour)
 	 * @return Facture
 	 */
-	public Facture lireFactureComplete(long idFacture, UtilisateurReel utilisateurLecteur, String messageErreur) {
+	public Facture lireFactureComplete(long idFacture, UtilisateurReel utilisateurLecteur, StringBuilder messageErreur) {
 		return null;
 	}
 	
@@ -48,10 +48,10 @@ public class ServiceFacture {
 	 * En cas d'echec, retourne false. Le paramètre messageErreur peut contenir un message pour l'utilisateur.
 	 * @param factureEntete
 	 * @param utilisateurModificateur
-	 * @param messageErreur
+	 * @param messageErreur (paramètre de retour)
 	 * @return boolean
 	 */
-	public boolean modifierFactureEntete(Facture factureEntete, UtilisateurReel utilisateurModificateur, String messageErreur) {
+	public boolean modifierFactureEntete(Facture factureEntete, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
 		return false;
 	}
 	
@@ -64,23 +64,24 @@ public class ServiceFacture {
 	 * @param idFacture
 	 * @param listeLignes
 	 * @param utilisateurModificateur
-	 * @param messageErreur
+	 * @param messageErreur (paramètre de retour)
 	 * @return boolean
 	 */
-	public boolean modifierListeLigneFacture(long idFacture, Set<LigneFacture> listeLignes, UtilisateurReel utilisateurModificateur, String messageErreur) {
+	public boolean modifierListeLigneFacture(long idFacture, Set<LigneFacture> listeLignes, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
 		return false;
 	}
 	
 	/**
 	 * Suppression d'une liste de lignes de facture.
-	 * L'utilisateur utilisateurModificateur doit être participant des factures des lignes de facture.
+	 * L'utilisateur utilisateurModificateur doit être participant de la facture idFacture.
 	 * En cas d'echec, retourne false. Le paramètre messageErreur peut contenir un message pour l'utilisateur.
+	 * @param idFacture
 	 * @param listeLignes
 	 * @param utilisateurModificateur
-	 * @param messageerreur
+	 * @param messageErreur (paramètre de retour)
 	 * @return boolean
 	 */
-	public boolean supprimerListeLigneFacture(Set<LigneFacture> listeLignes, UtilisateurReel utilisateurModificateur, String messageerreur) {
+	public boolean supprimerListeLigneFacture(long idFacture, Set<LigneFacture> listeLignes, UtilisateurReel utilisateurModificateur, StringBuilder messageerreur) {
 		return false;
 	}
 	
@@ -93,10 +94,10 @@ public class ServiceFacture {
 	 * @param idFacture
 	 * @param listeParticipations
 	 * @param utilisateurModificateur
-	 * @param messageErreur
+	 * @param messageErreur (paramètre de retour)
 	 * @return boolean
 	 */
-	public boolean modifierListeParticipation(long idFacture, Set<Participation> listeParticipations, UtilisateurReel utilisateurModificateur, String messageErreur) {
+	public boolean modifierListeParticipation(long idFacture, Set<Participation> listeParticipations, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
 		return false;
 	}
 	
@@ -108,10 +109,10 @@ public class ServiceFacture {
 	 * @param idFacture
 	 * @param listeParticipations
 	 * @param utilisateurModificateur
-	 * @param messageErreur
+	 * @param messageErreur (paramètre de retour)
 	 * @return boolean
 	 */
-	public boolean supprimerListeParticipation(long idFacture, Set<Participation> listeParticipations, UtilisateurReel utilisateurModificateur, String messageErreur) {
+	public boolean supprimerListeParticipation(long idFacture, Set<Participation> listeParticipations, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
 		return false;
 	}
 	
@@ -123,10 +124,10 @@ public class ServiceFacture {
 	 * 
 	 * @param participation
 	 * @param utilisateurModificateur
-	 * @param messageErreur
+	 * @param messageErreur (paramètre de retour)
 	 * @return boolean
 	 */
-	public boolean participationValidable(Participation participation, UtilisateurReel utilisateurVerificateur, String messageErreur) {
+	public boolean participationValidable(Participation participation, UtilisateurReel utilisateurVerificateur, StringBuilder messageErreur) {
 		return false;
 	}
 	
@@ -140,11 +141,11 @@ public class ServiceFacture {
 	 * Si la validation de la facture est effectuée avec succès, alors le paramètre FactureEstValidee renvoie true, sinon false.
 	 * @param participation
 	 * @param utilisateurModificateur
-	 * @param FactureEstValidee
-	 * @param messageErreur
+	 * @param FactureEstValidee (paramètre de retour)
+	 * @param messageErreur (paramètre de retour)
 	 * @return Date
 	 */
-	public Date validerParticipation(Participation participation, UtilisateurReel utilisateurModificateur, Boolean FactureEstValidee, String messageErreur) {
+	public Date validerParticipation(Participation participation, UtilisateurReel utilisateurModificateur, Boolean FactureEstValidee, StringBuilder messageErreur) {
 		FactureEstValidee = false;
 		return null;
 	}
@@ -156,10 +157,10 @@ public class ServiceFacture {
 	 * Si la facture n'est pas validable, retourne false, et le paramètre messageErreur contient le motif du refus.
 	 * @param idfacture
 	 * @param utilisateurVerificateur
-	 * @param messageErreur
+	 * @param messageErreur (paramètre de retour)
 	 * @return boolean
 	 */
-	public boolean factureValidable(long idfacture, UtilisateurReel utilisateurVerificateur, String messageErreur) {
+	public boolean factureValidable(long idfacture, UtilisateurReel utilisateurVerificateur, StringBuilder messageErreur) {
 		return false;
 	}
 	
@@ -170,10 +171,10 @@ public class ServiceFacture {
 	 * Si la facture n'est pas validée, retourne null, et le paramètre messageErreur contient le motif du refus.
 	 * @param idfacture
 	 * @param utilisateurModificateur
-	 * @param messageErreur
+	 * @param messageErreur (paramètre de retour)
 	 * @return Date
 	 */
-	public Date validerFacture(long idfacture, UtilisateurReel utilisateurModificateur, String messageErreur) {
+	public Date validerFacture(long idfacture, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
 		return null;
 	}
 	

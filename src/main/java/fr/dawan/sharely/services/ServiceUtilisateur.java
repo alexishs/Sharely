@@ -1,11 +1,14 @@
 package fr.dawan.sharely.services;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import fr.dawan.sharely.beans.UtilisateurReel;
+import fr.dawan.sharely.dao.GenericDAO;
 
 @Service
 public class ServiceUtilisateur {
+	
 
 	/**
 	 * Enregistrement d'un nouvel utilisateur.
@@ -15,7 +18,7 @@ public class ServiceUtilisateur {
 	 * @param messageErreur
 	 * @return boolean
 	 */
-	public boolean demandeInscriptionUtilisateur(UtilisateurReel nouvelUtilisateur,String messageErreur) {
+	public boolean demandeInscriptionUtilisateur(UtilisateurReel nouvelUtilisateur,StringBuilder messageErreur) {
 		return false;
 	}
 	
@@ -26,7 +29,8 @@ public class ServiceUtilisateur {
 	 * @param messageErreur
 	 * @return boolean
 	 */
-	public boolean validationInscriptionUtilisateur(UtilisateurReel utilisateur,String messageErreur) {
+	public boolean validationInscriptionUtilisateur(UtilisateurReel utilisateur,StringBuilder messageErreur) {
+		
 		return false;
 	}
 
@@ -38,8 +42,18 @@ public class ServiceUtilisateur {
 	 * @param messageErreur
 	 * @return boolean
 	 */
-	public UtilisateurReel connexion(String email,String motDePasse,String messageErreur) {
-		return null;
+	public UtilisateurReel connexion(String email,String motDePasse,StringBuilder messageErreur) {
+		System.out.println("Mdp encrypté : "+BCrypt.hashpw(motDePasse, BCrypt.gensalt()));
+		UtilisateurReel utilisateur = GenericDAO.findByField(UtilisateurReel.class, "email", email);
+		if(utilisateur==null) {
+			messageErreur.append("Utilisateur inconnu");
+		}else {
+			if(!BCrypt.checkpw(motDePasse,utilisateur.getPassword())) {
+				messageErreur.append("Mot de passe invalide");
+				utilisateur = null;
+			}
+		}
+		return utilisateur;
 	}
 	
 	/**
@@ -50,7 +64,7 @@ public class ServiceUtilisateur {
 	 * @param messageErreur
 	 * @return boolean
 	 */
-	public boolean envoiEmailRecuperationMotDePasse(String emailRecuperation,String messageErreur) {
+	public boolean envoiEmailRecuperationMotDePasse(String emailRecuperation,StringBuilder messageErreur) {
 		return false;
 	}
 	
