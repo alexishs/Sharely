@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class UtilisateurReel extends Utilisateur {
 	@Column(unique = true)
 	private String email; // obligatoire si Utilisateur Réel
-	private String password;
+	@JsonIgnore private String password;
 		
 	public UtilisateurReel() {}
 

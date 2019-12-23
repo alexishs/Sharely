@@ -12,12 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Participation")
 public class Participation extends DbObject{
 
 	@ManyToOne(fetch=FetchType.EAGER)
-	private Facture facture;
+	@JsonIgnore private Facture facture;
 	
 	@OneToOne(fetch=FetchType.EAGER)
 	private Utilisateur utilisateur;

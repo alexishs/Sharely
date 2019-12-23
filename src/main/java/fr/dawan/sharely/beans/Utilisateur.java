@@ -4,12 +4,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 
 /*
@@ -24,8 +28,9 @@ public abstract class Utilisateur extends DbObject{
 	private String nom;
 	private String prenom;
 	
-	@ManyToMany
-	private Set<Participation> participations = new HashSet<Participation>(); // part de l'utilisateur sur chaque facture. Une seule participation si utilisateur fictif.
+	@ManyToMany(fetch=FetchType.LAZY)
+	
+	@JsonIgnore private Set<Participation> participations = new HashSet<Participation>(); // part de l'utilisateur sur chaque facture. Une seule participation si utilisateur fictif.
 
 	@OneToMany
 	private Set<Dette> dettes;

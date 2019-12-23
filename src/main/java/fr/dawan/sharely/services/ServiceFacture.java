@@ -3,12 +3,14 @@ package fr.dawan.sharely.services;
 import java.time.LocalDate;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.beans.LigneFacture;
 import fr.dawan.sharely.beans.Participation;
 import fr.dawan.sharely.beans.UtilisateurReel;
+import fr.dawan.sharely.dao.FactureDAO;
 
 
 @Service
@@ -26,7 +28,14 @@ public class ServiceFacture {
 	 * @return Facture créée
 	 */
 	public Facture creerNouvelleFacture(String libelle, double montant, UtilisateurReel premierParticipant, StringBuilder messageErreur) {
-		return null;
+		Facture nouvelleFacture = new Facture(LocalDate.now(), libelle, montant);
+		nouvelleFacture.getParticipations().add(new Participation(nouvelleFacture, premierParticipant));
+		FactureDAO.create(nouvelleFacture);
+		if(nouvelleFacture.getId() == 0) {
+			messageErreur.append("La création de facture a échoué.");
+			return null;
+		}
+		return nouvelleFacture;
 	}
 	
 	/**

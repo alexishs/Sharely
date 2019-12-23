@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.controlers.ReponseRest;
+import fr.dawan.sharely.controlers.SessionUtilisateur;
 import fr.dawan.sharely.services.ServiceFacture;
 
 @RestController
@@ -32,7 +34,18 @@ public class ControleurFacture {
 	}
 	@PostMapping(value = "/new", produces = "application/json")
 	public ReponseRest nouvelleFacture(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @RequestBody InfosNouvelleFacture body) {
-		return ReponseRest.creerInvalide(reponseHttp, "Non implémenté");
+		StringBuilder messageErreur = new StringBuilder();
+		Facture nouvelleFacture =
+				this.serviceFacture.creerNouvelleFacture(
+						body.getLibelle(),
+						body.getMontant(),
+						SessionUtilisateur.getSession(requeteHttp).getUtilisateur(),
+						messageErreur);
+		if(nouvelleFacture != null) {
+			return ReponseRest.creerValide(nouvelleFacture);
+		}else {
+			return ReponseRest.creerInvalide(reponseHttp, messageErreur.toString());
+		}
 	}
 
 }

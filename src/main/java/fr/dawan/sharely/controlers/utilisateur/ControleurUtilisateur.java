@@ -18,7 +18,7 @@ import fr.dawan.sharely.controlers.facture.InfosNouvelleFacture;
 import fr.dawan.sharely.services.ServiceUtilisateur;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/me")
 public class ControleurUtilisateur {
 	
 	@Autowired
@@ -48,6 +48,6 @@ public class ControleurUtilisateur {
 	
 	@GetMapping(value ="/info", produces = "application/json")
 	public ReponseRest info(HttpServletRequest requeteHttp) {
-		return ReponseRest.creerValide(SessionUtilisateur.getSession(requeteHttp).getUtilisateur());
+		return ReponseRest.creerValide(SessionUtilisateur.getSession(requeteHttp).getUtilisateur(),"Réponse en cours d'implémentation !!!");
 	}
 }
