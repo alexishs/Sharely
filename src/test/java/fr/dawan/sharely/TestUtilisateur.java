@@ -2,7 +2,7 @@ package fr.dawan.sharely;
 
 import static org.junit.Assert.fail;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -33,7 +33,7 @@ public class TestUtilisateur {
 		
 		UtilisateurReel user = new UtilisateurReel(USER_NOM, USER_PRENOM, USER_EMAIL);
 		
-		Facture facture = new Facture(new Date(), "Restaurant la Houblonnière", 35);
+		Facture facture = new Facture(LocalDate.now(), "Restaurant la Houblonnière", 35);
 		
 		LigneFacture lf1 = new LigneFacture("Bouteille de coca 2L", 5.90);
 		LigneFacture lf2 = new LigneFacture("Pizza royale", 15.90);

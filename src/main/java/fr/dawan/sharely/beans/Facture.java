@@ -1,6 +1,6 @@
 package fr.dawan.sharely.beans;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -20,8 +20,8 @@ import fr.dawan.sharely.enums.EnumRepartition;
 @Table(name="Facture")
 public class Facture extends DbObject{
 
-	private Date dateFacture;
-	private Date dateValidation; // à NULL par défaut. Contient la date à laquelle la facture est validée, lorsque chaque participant a validé sa participation
+	private LocalDate dateFacture;
+	private LocalDate dateValidation; // à NULL par défaut. Contient la date à laquelle la facture est validée, lorsque chaque participant a validé sa participation
 	private String libelle;
 	
 	@Column(scale=2, precision=2)
@@ -42,24 +42,18 @@ public class Facture extends DbObject{
 	
 	public Facture() {}
 	
-	public Facture(Date dateFacture, String libelle, double montant) {
+	public Facture(LocalDate dateFacture, String libelle, double montant) {
 		super();
 		this.setDateFacture(dateFacture);
 		this.libelle = libelle;
 		this.montant = montant;
 	}
 	
-	/*
-	 * crée une facture, l'ajoute à la liste des factures.
-	 * les params doivent être valides
-	 * Si traitement correct, retourne la facture, sinon
-	 */
-	
-	public Date getDateValidation() {
+	public LocalDate getDateValidation() {
 		return dateValidation;
 	}
 
-	public void setDateValidation(Date dateValidation) {
+	public void setDateValidation(LocalDate dateValidation) {
 		this.dateValidation = dateValidation;
 	}
 
@@ -87,11 +81,11 @@ public class Facture extends DbObject{
 		this.repartition = repartition;
 	}
 
-	public Date getDateFacture() {
+	public LocalDate getDateFacture() {
 		return dateFacture;
 	}
 
-	public void setDateFacture(Date dateFacture) {
+	public void setDateFacture(LocalDate dateFacture) {
 		this.dateFacture = dateFacture;
 	}
 

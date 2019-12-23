@@ -1,6 +1,6 @@
 package fr.dawan.sharely.services;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class ServiceFacture {
 	 * @param montant
 	 * @param premierParticipant
 	 * @param messageErreur (paramètre de retour)
-	 * @return Facture
+	 * @return Facture créée
 	 */
 	public Facture creerNouvelleFacture(String libelle, double montant, UtilisateurReel premierParticipant, StringBuilder messageErreur) {
 		return null;
@@ -38,7 +38,7 @@ public class ServiceFacture {
 	 * @param messageErreur (paramètre de retour)
 	 * @return Facture
 	 */
-	public Facture lireFactureComplete(long idFacture, UtilisateurReel utilisateurLecteur, StringBuilder messageErreur) {
+	public Facture lireFacture(long idFacture, UtilisateurReel utilisateurLecteur, StringBuilder messageErreur) {
 		return null;
 	}
 	
@@ -49,10 +49,10 @@ public class ServiceFacture {
 	 * @param factureEntete
 	 * @param utilisateurModificateur
 	 * @param messageErreur (paramètre de retour)
-	 * @return boolean
+	 * @return Facture complête à laquelle se rapporte l'entête. Celle-ci peut contenir des modifications faites par les autres participants.
 	 */
-	public boolean modifierFactureEntete(Facture factureEntete, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
-		return false;
+	public Facture modifierFactureEntete(Facture factureEntete, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
+		return null;
 	}
 	
 	/**
@@ -65,10 +65,10 @@ public class ServiceFacture {
 	 * @param listeLignes
 	 * @param utilisateurModificateur
 	 * @param messageErreur (paramètre de retour)
-	 * @return boolean
+	 * @return Facture à laquelle se rapporte les lignes. Celle-ci peut contenir des modifications faites par les autres participants.
 	 */
-	public boolean modifierListeLigneFacture(long idFacture, Set<LigneFacture> listeLignes, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
-		return false;
+	public Facture modifierListeLigneFacture(long idFacture, Set<LigneFacture> listeLignes, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
+		return null;
 	}
 	
 	/**
@@ -79,10 +79,10 @@ public class ServiceFacture {
 	 * @param listeLignes
 	 * @param utilisateurModificateur
 	 * @param messageErreur (paramètre de retour)
-	 * @return boolean
+	 * @return Facture à laquelle se rapportent les lignes. Celle-ci peut contenir des modifications faites par les autres participants.
 	 */
-	public boolean supprimerListeLigneFacture(long idFacture, Set<LigneFacture> listeLignes, UtilisateurReel utilisateurModificateur, StringBuilder messageerreur) {
-		return false;
+	public Facture supprimerListeLigneFacture(long idFacture, Set<LigneFacture> listeLignes, UtilisateurReel utilisateurModificateur, StringBuilder messageerreur) {
+		return null;
 	}
 	
 	/**
@@ -110,10 +110,10 @@ public class ServiceFacture {
 	 * @param listeParticipations
 	 * @param utilisateurModificateur
 	 * @param messageErreur (paramètre de retour)
-	 * @return boolean
+	 * @return Facture
 	 */
-	public boolean supprimerListeParticipation(long idFacture, Set<Participation> listeParticipations, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
-		return false;
+	public Facture supprimerListeParticipation(long idFacture, Set<Participation> listeParticipations, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
+		return null;
 	}
 	
 	/**
@@ -143,9 +143,9 @@ public class ServiceFacture {
 	 * @param utilisateurModificateur
 	 * @param FactureEstValidee (paramètre de retour)
 	 * @param messageErreur (paramètre de retour)
-	 * @return Date
+	 * @return LocalDate
 	 */
-	public Date validerParticipation(Participation participation, UtilisateurReel utilisateurModificateur, Boolean FactureEstValidee, StringBuilder messageErreur) {
+	public LocalDate validerParticipation(Participation participation, UtilisateurReel utilisateurModificateur, Boolean FactureEstValidee, StringBuilder messageErreur) {
 		FactureEstValidee = false;
 		return null;
 	}
@@ -172,9 +172,9 @@ public class ServiceFacture {
 	 * @param idfacture
 	 * @param utilisateurModificateur
 	 * @param messageErreur (paramètre de retour)
-	 * @return Date
+	 * @return LocalDate
 	 */
-	public Date validerFacture(long idfacture, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
+	public LocalDate validerFacture(long idfacture, UtilisateurReel utilisateurModificateur, StringBuilder messageErreur) {
 		return null;
 	}
 	
