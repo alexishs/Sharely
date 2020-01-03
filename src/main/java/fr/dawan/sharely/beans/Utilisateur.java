@@ -15,11 +15,6 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
-
-/*
- * pour empêcher certaines propriétés d'être exportées en JSON, voir https://github.com/FasterXML/jackson-annotations
- */
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "Utilisateur")
@@ -30,9 +25,11 @@ public abstract class Utilisateur extends DbObject{
 	
 	@ManyToMany(fetch=FetchType.LAZY)
 	
-	@JsonIgnore private Set<Participation> participations = new HashSet<Participation>(); // part de l'utilisateur sur chaque facture. Une seule participation si utilisateur fictif.
+	@JsonIgnore
+	private Set<Participation> participations = new HashSet<Participation>(); // part de l'utilisateur sur chaque facture. Une seule participation si utilisateur fictif.
 
 	@OneToMany
+	@JsonIgnore
 	private Set<Dette> dettes;
 	
 	@Transient
@@ -42,6 +39,7 @@ public abstract class Utilisateur extends DbObject{
 	private Set<Dette> dettesARecevoir = new HashSet<Dette>(); // total, toutes factures, des dettes à payer par les autres utilisateurs, à l'utilisateur
 	
 	@OneToMany
+	@JsonIgnore
 	private Set<Remboursement> remboursements;
 	
 	@Transient

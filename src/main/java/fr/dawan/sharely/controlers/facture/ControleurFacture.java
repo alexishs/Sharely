@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,9 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.controlers.ReponseRest;
 import fr.dawan.sharely.controlers.SessionUtilisateur;
+import fr.dawan.sharely.enums.EnumResultatTraitement;
+import fr.dawan.sharely.services.RetourTraitement;
 import fr.dawan.sharely.services.ServiceFacture;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/invoices")
 public class ControleurFacture {
 	
@@ -25,27 +29,22 @@ public class ControleurFacture {
 	
 	@GetMapping(value = "/list", produces = "application/json")
 	public ReponseRest listeFacture(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp) {
-		return ReponseRest.creerInvalide(reponseHttp, "Non implémenté");
+		return new ReponseRest(reponseHttp, EnumResultatTraitement.ECHEC_METIER, "Non implémenté", null, null);
 	}
 	
 	@RequestMapping(value = "/new", method = RequestMethod.OPTIONS, produces = "application/json")
-	public ReponseRest formatNouvelleFacture() {
-		return ReponseRest.creerFormat(new InfosNouvelleFacture(),RequestMethod.POST);
+	public ReponseRest formatNouvelleFacture(HttpServletResponse reponseHttp) {
+		return ReponseRest.creerFormat(reponseHttp, new InfosNouvelleFacture(),RequestMethod.POST);
 	}
 	@PostMapping(value = "/new", produces = "application/json")
 	public ReponseRest nouvelleFacture(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @RequestBody InfosNouvelleFacture body) {
-		StringBuilder messageErreur = new StringBuilder();
+		RetourTraitement retourTraitement = new RetourTraitement();
 		Facture nouvelleFacture =
-				this.serviceFacture.creerNouvelleFacture(
-						body.getLibelle(),
-						body.getMontant(),
-						SessionUtilisateur.getSession(requeteHttp).getUtilisateur(),
-						messageErreur);
-		if(nouvelleFacture != null) {
-			return ReponseRest.creerValide(nouvelleFacture);
-		}else {
-			return ReponseRest.creerInvalide(reponseHttp, messageErreur.toString());
-		}
+			this.serviceFacture.creerNouvelleFacture(
+				body.getLibelle(),
+				body.getMontant(),
+				SessionUtilisateur.getSession(requeteHttp).getUtilisateur(),
+				retourTraitement);
+		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, nouvelleFacture);
 	}
-
 }

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.beans.UtilisateurReel;
 
 public class SessionUtilisateur implements Serializable {

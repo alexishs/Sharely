@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class UtilisateurReel extends Utilisateur {
 	@Column(unique = true)
 	private String email; // obligatoire si Utilisateur Réel
-	@JsonIgnore private String password;
+	@JsonIgnore
+	private String password;
 		
 	public UtilisateurReel() {}
 
