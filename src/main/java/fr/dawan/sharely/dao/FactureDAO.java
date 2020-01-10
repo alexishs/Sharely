@@ -20,14 +20,13 @@ public class FactureDAO extends GenericDAO {
 				entityManager.persist(facture);
 				System.out.println("Insertion de " + facture.toString());
 
-				// pour chaque session de la formation
+				/* pas nécessaire à la création de facture
 				for (LigneFacture lignefacture : facture.getLignesFactures()) {
-					// insertion de la session de formation
 					lignefacture.setFacture(facture);
 					entityManager.persist(lignefacture);
 					System.out.println("Insertion de " + lignefacture.toString());
-					
 				}
+				*/
 
 				// on commit tout ce qui s'est fait dans la transaction
 				transaction.commit();

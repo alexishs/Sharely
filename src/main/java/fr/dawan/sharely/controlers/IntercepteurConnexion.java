@@ -12,6 +12,7 @@ public class IntercepteurConnexion extends HandlerInterceptorAdapter {
 		if(!"/sharely/me/login".equals(requeteHttp.getRequestURI())) {
 			if(!SessionUtilisateur.getSession(requeteHttp).estConnecte()) {
 				response.sendError(HttpStatus.FORBIDDEN.value());
+				return false;
 			}
 		}
 		return true;

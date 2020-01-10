@@ -32,7 +32,7 @@ public class ControleurUtilisateur {
 	public ReponseRest formatlogin(HttpServletResponse reponseHttp) {
 		return ReponseRest.creerFormat(reponseHttp, new InfosConnexion(),RequestMethod.POST);
 	}
-	@PostMapping(value ="/login", produces = "application/json")
+	@PostMapping(value ="/login", produces = "application/json", consumes = "application/json")
 	public ReponseRest login(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @RequestBody InfosConnexion body) {
 		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
 		RetourTraitement retourTraitement = new RetourTraitement();

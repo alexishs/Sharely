@@ -52,11 +52,22 @@ public class ServiceFacture {
 	 * En cas d'echec, retourne null.
 	 * @param idFacture
 	 * @param utilisateurLecteur
-	 * @param messageErreur (paramètre de retour)
+	 * @param RetourTraitement
 	 * @return Facture
 	 */
-	public Facture lireFacture(long idFacture, UtilisateurReel utilisateurLecteur, StringBuilder messageErreur) {
-		return null;
+	public Facture lireFacture(long idFacture, UtilisateurReel utilisateurLecteur, RetourTraitement retourTraitement) {
+		Facture factureDemandee = FactureDAO.findById(Facture.class, idFacture);
+		
+		if(factureDemandee == null) {
+			retourTraitement.definirResultat(EnumResultatTraitement.RESSOURCE_INCONNUE, "La facture demandée n'existe pas.");
+			return null;
+		} else {
+			if(!utilisateurEstParticipant(utilisateurLecteur.getId(),factureDemandee)) {
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCES_INTERDIT, null);
+				return null;
+			}
+		}
+		return factureDemandee;
 	}
 	
 	/**
@@ -195,5 +206,14 @@ public class ServiceFacture {
 		return null;
 	}
 	
-
+	private boolean utilisateurEstParticipant(long idUtilisateur, Facture facture) {
+		Set<Participation> listeParticipations = facture.getParticipations();
+		for(Participation participation : listeParticipations) {
+			if(participation.getUtilisateur().getId() == idUtilisateur) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

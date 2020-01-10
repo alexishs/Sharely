@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +28,17 @@ public class ControleurFacture {
 	@Autowired
 	ServiceFacture serviceFacture;
 	
-	@GetMapping(value = "/list", produces = "application/json")
+	@GetMapping(value = "/", produces = "application/json")
 	public ReponseRest listeFacture(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp) {
 		return new ReponseRest(reponseHttp, EnumResultatTraitement.ECHEC_METIER, "Non implémenté", null, null);
+	}
+	
+	@GetMapping(value = "/{idfacture}", produces = "application/json")
+	public ReponseRest lireFacture(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @PathVariable(value = "idfacture") long idFacture) {
+		RetourTraitement retourTraitement = new RetourTraitement();
+		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
+		Facture factureLue = serviceFacture.lireFacture(idFacture, sessionUtilisateur.getUtilisateur(), retourTraitement);
+		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, factureLue);
 	}
 	
 	@RequestMapping(value = "/new", method = RequestMethod.OPTIONS, produces = "application/json")

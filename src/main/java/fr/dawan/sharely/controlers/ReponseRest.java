@@ -41,6 +41,18 @@ public class ReponseRest {
 				this.messageUtilisateur = "Traitement impossible.";
 			}
 			break;
+		case RESSOURCE_INCONNUE:
+			this.reponseHttp.setStatus(HttpStatus.NOT_FOUND.value());
+			if(this.messageUtilisateur == null) {
+				this.messageUtilisateur = "La ressource demandée est introuvable.";
+			}
+			break;
+		case ACCES_INTERDIT:
+			this.reponseHttp.setStatus(HttpStatus.FORBIDDEN.value());
+			if(this.messageUtilisateur == null) {
+				this.messageUtilisateur = "L'accès à cette ressource est interdit.";
+			}
+			break;
 		default:
 			this.reponseHttp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			if(this.messageUtilisateur == null) {
