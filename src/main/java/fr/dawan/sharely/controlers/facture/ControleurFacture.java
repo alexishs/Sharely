@@ -1,5 +1,8 @@
 package fr.dawan.sharely.controlers.facture;
 
+import java.util.List;
+
+import javax.persistence.Tuple;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.controlers.ReponseRest;
 import fr.dawan.sharely.controlers.SessionUtilisateur;
+import fr.dawan.sharely.dao.GenericDAO;
 import fr.dawan.sharely.enums.EnumResultatTraitement;
 import fr.dawan.sharely.services.RetourTraitement;
 import fr.dawan.sharely.services.ServiceFacture;
@@ -30,7 +34,11 @@ public class ControleurFacture {
 	
 	@GetMapping(value = "/", produces = "application/json")
 	public ReponseRest listeFacture(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp) {
-		return new ReponseRest(reponseHttp, EnumResultatTraitement.ERREUR_INATTENDUE, "Non implémenté", null, null);
+		RetourTraitement retourTraitement = new RetourTraitement();
+		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
+		List<Tuple> dataSet = serviceFacture.listeFactures(sessionUtilisateur.getUtilisateur(), retourTraitement);
+		List<List<String>> dataSetRest = GenericDAO.DataSetEnStrings(dataSet);
+		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, dataSetRest);
 	}
 	
 	@GetMapping(value = "/{idfacture}", produces = "application/json")

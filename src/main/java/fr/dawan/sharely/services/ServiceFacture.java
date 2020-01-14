@@ -1,7 +1,12 @@
 package fr.dawan.sharely.services;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.persistence.Tuple;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +16,7 @@ import fr.dawan.sharely.beans.LigneFacture;
 import fr.dawan.sharely.beans.Participation;
 import fr.dawan.sharely.beans.UtilisateurReel;
 import fr.dawan.sharely.dao.FactureDAO;
+import fr.dawan.sharely.dao.GenericDAO;
 import fr.dawan.sharely.enums.EnumResultatTraitement;
 
 
@@ -204,6 +210,11 @@ public class ServiceFacture {
 	 */
 	public LocalDate validerFacture(long idfacture, UtilisateurReel utilisateurModificateur, RetourTraitement retourTraitement) {
 		return null;
+	}
+	
+	public List<Tuple> listeFactures(UtilisateurReel utilisateurDemandeur, RetourTraitement retourTraitement){
+		List<Tuple> dataSet = GenericDAO.executerSelectJPQL("SELECT facture.id, facture.libelle, facture.dateFacture, montant FROM Facture facture");
+		return dataSet;
 	}
 	
 	private boolean utilisateurEstParticipant(long idUtilisateur, Facture facture) {

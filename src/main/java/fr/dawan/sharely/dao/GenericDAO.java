@@ -3,6 +3,7 @@ package fr.dawan.sharely.dao;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -153,6 +155,8 @@ public class GenericDAO {
 
 		return resultat;
 	}
+	
+	
 
 	/**
 	 * Permet de récupérer toutes les entrées pour une table données à partir d'une
@@ -179,6 +183,27 @@ public class GenericDAO {
 		em.close();
 
 		return resultat;
+	}
+	
+	public static List<List<String>> DataSetEnStrings(List<Tuple> dataSet){
+		List<List<String>> tableau = new ArrayList<List<String>>();
+		for(Tuple enregistrement : dataSet) {
+			List<String> ligne = new ArrayList<String>();
+			int nbChamps = enregistrement.getElements().size();
+			for (byte iChamp = 0; iChamp < nbChamps; iChamp++) {
+				ligne.add(enregistrement.get(iChamp).toString());
+			}
+			tableau.add(ligne);
+		}
+		return tableau;
+	}
+	
+	public static List<Tuple> executerSelectJPQL(String requete){
+		EntityManager em = createEntityManager();
+		TypedQuery<Tuple> query = em.createQuery(requete, Tuple.class);
+		List<Tuple> dataSet = query.getResultList();
+		em.close();
+		return dataSet;
 	}
 
 	public static <T extends DbObject> void deleteAll(Class<T> clazz) {
