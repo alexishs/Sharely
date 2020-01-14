@@ -35,10 +35,10 @@ public class ReponseRest {
 				this.messageUtilisateur = "OK.";
 			}
 			break;
-		case ECHEC_METIER:
+		case DEMANDE_REFUSEE:
 			this.reponseHttp.setStatus(HttpStatus.BAD_REQUEST.value());
 			if(this.messageUtilisateur == null) {
-				this.messageUtilisateur = "Traitement impossible.";
+				this.messageUtilisateur = "Le traitement demandé a été refusé.";
 			}
 			break;
 		case RESSOURCE_INCONNUE:

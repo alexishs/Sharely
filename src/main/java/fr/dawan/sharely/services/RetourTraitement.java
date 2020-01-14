@@ -28,14 +28,16 @@ public class RetourTraitement {
 		return commentairesUtilisateur;
 	}
 	
-	public void definirResultat(EnumResultatTraitement codeRetour,String messageUtilisateur) {
+	public void definirResultat(EnumResultatTraitement codeRetour,String messageUtilisateur, String commentaire) {
 		this.CodeRetour = codeRetour;
 		this.messageUtilisateur = messageUtilisateur;
+		if(commentaire != null) {
+			commentairesUtilisateur.add(commentaire);
+		}
 	}
 	
 	public boolean enErreur() {
-		EnumResultatTraitement[] tableauErreurs = {EnumResultatTraitement.ECHEC_METIER, EnumResultatTraitement.ERREUR_INATTENDUE};
-		return (Arrays.asList(tableauErreurs).indexOf(this.getCodeRetour())>-1);
+		return (getCodeRetour() != EnumResultatTraitement.OK);
 	}
 
 }

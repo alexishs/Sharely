@@ -30,7 +30,7 @@ public class ControleurFacture {
 	
 	@GetMapping(value = "/", produces = "application/json")
 	public ReponseRest listeFacture(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp) {
-		return new ReponseRest(reponseHttp, EnumResultatTraitement.ECHEC_METIER, "Non implémenté", null, null);
+		return new ReponseRest(reponseHttp, EnumResultatTraitement.ERREUR_INATTENDUE, "Non implémenté", null, null);
 	}
 	
 	@GetMapping(value = "/{idfacture}", produces = "application/json")

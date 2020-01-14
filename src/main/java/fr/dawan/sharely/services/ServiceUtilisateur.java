@@ -51,10 +51,9 @@ public class ServiceUtilisateur {
 			}
 		}
 		if(utilisateur == null) {
-			retourTraitement.definirResultat(EnumResultatTraitement.ECHEC_METIER, "Connexion impossible");
-			retourTraitement.getCommentairesUtilisateur().add("Utilisateur ou mot de passe invalide");
+			retourTraitement.definirResultat(EnumResultatTraitement.DEMANDE_REFUSEE, "Connexion impossible", "Utilisateur ou mot de passe invalide");
 		}else {
-			retourTraitement.definirResultat(EnumResultatTraitement.OK, null);
+			retourTraitement.definirResultat(EnumResultatTraitement.OK, null, null);
 		}
 		return utilisateur;
 	}

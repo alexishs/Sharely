@@ -34,13 +34,13 @@ public class ServiceFacture {
 			nouvelleFacture.getParticipations().add(new Participation(nouvelleFacture, premierParticipant));
 			FactureDAO.create(nouvelleFacture);
 			if(nouvelleFacture.getId() == 0) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ECHEC_METIER,"La création de facture a échoué.");
+				retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE,"La création de facture a échoué.", null);
 				return null;
 			}
-			retourTraitement.definirResultat(EnumResultatTraitement.OK, "Nouvelle facture créée.");
+			retourTraitement.definirResultat(EnumResultatTraitement.OK, "Nouvelle facture créée.", null);
 			return nouvelleFacture;
 		}catch (Exception e) {
-			retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE, "Une erreur inattendue est intervenue lors de la création de la facture. Veuillez réessayer ultérieurement.");
+			retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE, null, null);
 			/* TODO: enregistrer l'exception ici*/
 			return null;
 		}
@@ -59,11 +59,11 @@ public class ServiceFacture {
 		Facture factureDemandee = FactureDAO.findById(Facture.class, idFacture);
 		
 		if(factureDemandee == null) {
-			retourTraitement.definirResultat(EnumResultatTraitement.RESSOURCE_INCONNUE, "La facture demandée n'existe pas.");
+			retourTraitement.definirResultat(EnumResultatTraitement.RESSOURCE_INCONNUE, "La facture demandée n'existe pas.", null);
 			return null;
 		} else {
 			if(!utilisateurEstParticipant(utilisateurLecteur.getId(),factureDemandee)) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ACCES_INTERDIT, null);
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCES_INTERDIT, "Vous ne participez pas à cette facture", null);
 				return null;
 			}
 		}
