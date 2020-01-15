@@ -15,6 +15,7 @@ import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.beans.LigneFacture;
 import fr.dawan.sharely.beans.Participation;
 import fr.dawan.sharely.beans.UtilisateurReel;
+import fr.dawan.sharely.dao.DataSet;
 import fr.dawan.sharely.dao.FactureDAO;
 import fr.dawan.sharely.dao.GenericDAO;
 import fr.dawan.sharely.enums.EnumResultatTraitement;
@@ -212,8 +213,9 @@ public class ServiceFacture {
 		return null;
 	}
 	
-	public List<Tuple> listeFactures(UtilisateurReel utilisateurDemandeur, RetourTraitement retourTraitement){
-		List<Tuple> dataSet = GenericDAO.executerSelectJPQL("SELECT facture.id, facture.libelle, facture.dateFacture, montant FROM Facture facture");
+	public DataSet listeFactures(UtilisateurReel utilisateurDemandeur, RetourTraitement retourTraitement){
+		DataSet dataSet = GenericDAO.executerSelectJPQL("SELECT facture.id, facture.libelle, facture.dateFacture, montant FROM Facture facture",
+														"ID;Libelle;Date de facture;Montant");
 		return dataSet;
 	}
 	

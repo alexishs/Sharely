@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.controlers.ReponseRest;
 import fr.dawan.sharely.controlers.SessionUtilisateur;
+import fr.dawan.sharely.dao.DataSet;
 import fr.dawan.sharely.dao.GenericDAO;
 import fr.dawan.sharely.enums.EnumResultatTraitement;
 import fr.dawan.sharely.services.RetourTraitement;
@@ -36,9 +37,8 @@ public class ControleurFacture {
 	public ReponseRest listeFacture(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp) {
 		RetourTraitement retourTraitement = new RetourTraitement();
 		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
-		List<Tuple> dataSet = serviceFacture.listeFactures(sessionUtilisateur.getUtilisateur(), retourTraitement);
-		List<List<String>> dataSetRest = GenericDAO.DataSetEnStrings(dataSet);
-		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, dataSetRest);
+		DataSet dataSet = serviceFacture.listeFactures(sessionUtilisateur.getUtilisateur(), retourTraitement);
+		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, dataSet.toStringLists());
 	}
 	
 	@GetMapping(value = "/{idfacture}", produces = "application/json")

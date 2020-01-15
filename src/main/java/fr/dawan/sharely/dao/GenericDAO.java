@@ -185,23 +185,11 @@ public class GenericDAO {
 		return resultat;
 	}
 	
-	public static List<List<String>> DataSetEnStrings(List<Tuple> dataSet){
-		List<List<String>> tableau = new ArrayList<List<String>>();
-		for(Tuple enregistrement : dataSet) {
-			List<String> ligne = new ArrayList<String>();
-			int nbChamps = enregistrement.getElements().size();
-			for (byte iChamp = 0; iChamp < nbChamps; iChamp++) {
-				ligne.add(enregistrement.get(iChamp).toString());
-			}
-			tableau.add(ligne);
-		}
-		return tableau;
-	}
-	
-	public static List<Tuple> executerSelectJPQL(String requete){
+	public static DataSet executerSelectJPQL(String requete,String libelles){
 		EntityManager em = createEntityManager();
+		DataSet dataSet = new DataSet(libelles);
 		TypedQuery<Tuple> query = em.createQuery(requete, Tuple.class);
-		List<Tuple> dataSet = query.getResultList();
+		dataSet.SetRecords(query.getResultList());
 		em.close();
 		return dataSet;
 	}
