@@ -7,16 +7,12 @@ import java.util.List;
 
 import javax.persistence.Tuple;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class DataSet implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	private List<String> columnNames = new ArrayList<String>();
-	@JsonIgnore
-	private List<Tuple> enregistrements;
-	private List<List<String>> recordList;
+	private List<Tuple> records;
 	
 	public DataSet() {
 		super();
@@ -27,10 +23,6 @@ public class DataSet implements Serializable {
 		SetColumnNames(nomsColonnes);
 	}
 
-	public List<String> getColumnNames() {
-		return columnNames;
-	}
-
 	public void SetColumnNames(String nomsColonnes) {
 		columnNames.clear();
 		if(nomsColonnes != null) {
@@ -38,25 +30,18 @@ public class DataSet implements Serializable {
 		}
 	}
 	
-	public List<Tuple> getEnregistrements(){
-		return enregistrements;
+	public List<Tuple> getRecords(){
+		return records;
 	}
 	
-	public void SetEnregistrements(List<Tuple> enregistrements) {
-		this.enregistrements = enregistrements;
-		recordList = null;
+	public void SetRecords(List<Tuple> records) {
+		this.records = records;
 	}
 	
-	public List<List<String>> getRecordList() {
-		if(recordList == null) {
-			remplireRecordList();
-		}
-		return recordList;
-	}
-
-	private void remplireRecordList(){
-		recordList = new ArrayList<List<String>>();
-		for(Tuple enregistrement : enregistrements) {
+	public List<List<String>> toStringLists(){
+		List<List<String>> StringLists = new ArrayList<List<String>>();
+		StringLists.add(columnNames);
+		for(Tuple enregistrement : records) {
 			List<String> ligne = new ArrayList<String>();
 			int nbChamps = enregistrement.getElements().size();
 			for (byte iChamp = 0; iChamp < nbChamps; iChamp++) {
@@ -66,8 +51,9 @@ public class DataSet implements Serializable {
 					ligne.add(enregistrement.get(iChamp).toString());
 				}
 			}
-			recordList.add(ligne);
+			StringLists.add(ligne);
 		}
+		return StringLists;
 	}
 	
 }

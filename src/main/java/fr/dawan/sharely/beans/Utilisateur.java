@@ -23,7 +23,8 @@ public abstract class Utilisateur extends DbObject{
 	private String nom;
 	private String prenom;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy = "utilisateur")
+	@ManyToMany(fetch=FetchType.LAZY)
+	
 	@JsonIgnore
 	private Set<Participation> participations = new HashSet<Participation>(); // part de l'utilisateur sur chaque facture. Une seule participation si utilisateur fictif.
 

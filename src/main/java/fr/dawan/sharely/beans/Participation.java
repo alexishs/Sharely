@@ -21,7 +21,7 @@ public class Participation extends DbObject{
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JsonIgnore private Facture facture;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch=FetchType.EAGER)
 	private Utilisateur utilisateur;
 	
 	@Column(scale=2, precision=2)
