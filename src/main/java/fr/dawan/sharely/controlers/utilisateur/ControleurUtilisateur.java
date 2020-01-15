@@ -32,14 +32,14 @@ public class ControleurUtilisateur {
 	public ReponseRest formatlogin(HttpServletResponse reponseHttp) {
 		return ReponseRest.creerFormat(reponseHttp, new InfosConnexion(),RequestMethod.POST);
 	}
-	@PostMapping(value ="/login", produces = "application/json")
+	@PostMapping(value ="/login", produces = "application/json", consumes = "application/json")
 	public ReponseRest login(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @RequestBody InfosConnexion body) {
 		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
 		RetourTraitement retourTraitement = new RetourTraitement();
 		UtilisateurReel utilisateurIdentifie = serviceUtilisateur.connexion(body.email, body.motDePasse, retourTraitement);
 		if(!retourTraitement.enErreur()) {
 			if(!sessionUtilisateur.connexion(utilisateurIdentifie)) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE, "Une erreur est survenue lors de la création de session.");
+				retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE, "Une erreur est survenue lors de la création de session.", null);
 			}
 		}
 		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, null);
@@ -53,6 +53,6 @@ public class ControleurUtilisateur {
 	
 	@GetMapping(value ="/info", produces = "application/json")
 	public ReponseRest info(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp) {
-		return new ReponseRest(reponseHttp, EnumResultatTraitement.ECHEC_METIER, "Non implémenté.", null, null);
+		return new ReponseRest(reponseHttp, EnumResultatTraitement.ERREUR_INATTENDUE, "Non implémenté.", null, null);
 	}
 }

@@ -1,7 +1,12 @@
 package fr.dawan.sharely.services;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.persistence.Tuple;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +15,9 @@ import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.beans.LigneFacture;
 import fr.dawan.sharely.beans.Participation;
 import fr.dawan.sharely.beans.UtilisateurReel;
+import fr.dawan.sharely.dao.DataSet;
 import fr.dawan.sharely.dao.FactureDAO;
+import fr.dawan.sharely.dao.GenericDAO;
 import fr.dawan.sharely.enums.EnumResultatTraitement;
 
 
@@ -34,13 +41,13 @@ public class ServiceFacture {
 			nouvelleFacture.getParticipations().add(new Participation(nouvelleFacture, premierParticipant));
 			FactureDAO.create(nouvelleFacture);
 			if(nouvelleFacture.getId() == 0) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ECHEC_METIER,"La création de facture a échoué.");
+				retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE,"La création de facture a échoué.", null);
 				return null;
 			}
-			retourTraitement.definirResultat(EnumResultatTraitement.OK, "Nouvelle facture créée.");
+			retourTraitement.definirResultat(EnumResultatTraitement.OK, "Nouvelle facture créée.", null);
 			return nouvelleFacture;
 		}catch (Exception e) {
-			retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE, "Une erreur inattendue est intervenue lors de la création de la facture. Veuillez réessayer ultérieurement.");
+			retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE, null, null);
 			/* TODO: enregistrer l'exception ici*/
 			return null;
 		}
@@ -52,11 +59,22 @@ public class ServiceFacture {
 	 * En cas d'echec, retourne null.
 	 * @param idFacture
 	 * @param utilisateurLecteur
-	 * @param messageErreur (paramètre de retour)
+	 * @param RetourTraitement
 	 * @return Facture
 	 */
-	public Facture lireFacture(long idFacture, UtilisateurReel utilisateurLecteur, StringBuilder messageErreur) {
-		return null;
+	public Facture lireFacture(long idFacture, UtilisateurReel utilisateurLecteur, RetourTraitement retourTraitement) {
+		Facture factureDemandee = FactureDAO.findById(Facture.class, idFacture);
+		
+		if(factureDemandee == null) {
+			retourTraitement.definirResultat(EnumResultatTraitement.RESSOURCE_INCONNUE, "La facture demandée n'existe pas.", null);
+			return null;
+		} else {
+			if(!utilisateurEstParticipant(utilisateurLecteur.getId(),factureDemandee)) {
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCES_INTERDIT, "Vous ne participez pas à cette facture", null);
+				return null;
+			}
+		}
+		return factureDemandee;
 	}
 	
 	/**
@@ -195,5 +213,57 @@ public class ServiceFacture {
 		return null;
 	}
 	
-
+	public DataSet listeFactures(UtilisateurReel utilisateurDemandeur, RetourTraitement retourTraitement){
+		StringBuilder Jpql = new StringBuilder();
+		/*
+		Jpql.append("SELECT distinct")
+		.append(	" facture.id, facture.libelle, facture.dateFacture, facture.montant")
+		.append(" FROM Facture facture");
+		*/
+		/*
+		Jpql.append("SELECT distinct")
+			.append(	" facture.id, facture.libelle, facture.dateFacture, facture.montant")
+			.append(" FROM")
+			.append(	" UtilisateurReel utilisateurReel,")
+			.append(	" Participation participation,")
+			.append(	" Facture facture")
+			.append(" WHERE")	
+			.append(	" utilisateurReel.id = "+Long.toString(utilisateurDemandeur.getId()))
+			.append(	" AND participation MEMBER OF utilisateurReel.participations")
+			.append(	" AND facture = participation.facture");
+			
+			SELECT c, p.name FROM Country c LEFT OUTER JOIN c.capital p
+		*/
+		Jpql.append("SELECT distinct")
+			.append(	" facture.id, facture.libelle, facture.dateFacture, facture.montant")
+			.append(" FROM")
+			.append(	" UtilisateurReel utilisateurReel")
+			.append(	" LEFT JOIN utilisateurReel.participations participation")
+			.append(	" LEFT JOIN participation.facture facture")
+			.append(" WHERE")	
+			.append(	" utilisateurReel.id = "+Long.toString(utilisateurDemandeur.getId()));
+			//.append(	" AND participation MEMBER OF utilisateurReel.participations")
+			//.append(	" AND facture = participation.facture");
+		System.out.println(Jpql);
+		/*
+		    select distinct facture.*
+			from utilisateurreel
+			left join participation on participation.utilisateur_id = utilisateurreel.id
+			left join facture on facture.id = participation.facture_id
+			where utilisateurreel.id=1
+		 */
+		DataSet dataSet = GenericDAO.executerSelectJPQL(Jpql.toString(),"ID;Libelle;Date de facture;Montant");
+		return dataSet;
+	}
+	
+	private boolean utilisateurEstParticipant(long idUtilisateur, Facture facture) {
+		Set<Participation> listeParticipations = facture.getParticipations();
+		for(Participation participation : listeParticipations) {
+			if(participation.getUtilisateur().getId() == idUtilisateur) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

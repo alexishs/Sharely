@@ -3,6 +3,7 @@ package fr.dawan.sharely.dao;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -153,6 +155,8 @@ public class GenericDAO {
 
 		return resultat;
 	}
+	
+	
 
 	/**
 	 * Permet de récupérer toutes les entrées pour une table données à partir d'une
@@ -179,6 +183,15 @@ public class GenericDAO {
 		em.close();
 
 		return resultat;
+	}
+	
+	public static DataSet executerSelectJPQL(String requete,String libelles){
+		EntityManager em = createEntityManager();
+		DataSet dataSet = new DataSet(libelles);
+		TypedQuery<Tuple> query = em.createQuery(requete, Tuple.class);
+		dataSet.SetEnregistrements(query.getResultList());
+		em.close();
+		return dataSet;
 	}
 
 	public static <T extends DbObject> void deleteAll(Class<T> clazz) {
