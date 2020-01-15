@@ -189,7 +189,7 @@ public class GenericDAO {
 		EntityManager em = createEntityManager();
 		DataSet dataSet = new DataSet(libelles);
 		TypedQuery<Tuple> query = em.createQuery(requete, Tuple.class);
-		dataSet.SetRecords(query.getResultList());
+		dataSet.SetEnregistrements(query.getResultList());
 		em.close();
 		return dataSet;
 	}

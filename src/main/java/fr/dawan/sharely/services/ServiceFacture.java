@@ -214,8 +214,45 @@ public class ServiceFacture {
 	}
 	
 	public DataSet listeFactures(UtilisateurReel utilisateurDemandeur, RetourTraitement retourTraitement){
-		DataSet dataSet = GenericDAO.executerSelectJPQL("SELECT facture.id, facture.libelle, facture.dateFacture, montant FROM Facture facture",
-														"ID;Libelle;Date de facture;Montant");
+		StringBuilder Jpql = new StringBuilder();
+		/*
+		Jpql.append("SELECT distinct")
+		.append(	" facture.id, facture.libelle, facture.dateFacture, facture.montant")
+		.append(" FROM Facture facture");
+		*/
+		/*
+		Jpql.append("SELECT distinct")
+			.append(	" facture.id, facture.libelle, facture.dateFacture, facture.montant")
+			.append(" FROM")
+			.append(	" UtilisateurReel utilisateurReel,")
+			.append(	" Participation participation,")
+			.append(	" Facture facture")
+			.append(" WHERE")	
+			.append(	" utilisateurReel.id = "+Long.toString(utilisateurDemandeur.getId()))
+			.append(	" AND participation MEMBER OF utilisateurReel.participations")
+			.append(	" AND facture = participation.facture");
+			
+			SELECT c, p.name FROM Country c LEFT OUTER JOIN c.capital p
+		*/
+		Jpql.append("SELECT distinct")
+			.append(	" facture.id, facture.libelle, facture.dateFacture, facture.montant")
+			.append(" FROM")
+			.append(	" UtilisateurReel utilisateurReel")
+			.append(	" LEFT JOIN utilisateurReel.participations participation")
+			.append(	" LEFT JOIN participation.facture facture")
+			.append(" WHERE")	
+			.append(	" utilisateurReel.id = "+Long.toString(utilisateurDemandeur.getId()));
+			//.append(	" AND participation MEMBER OF utilisateurReel.participations")
+			//.append(	" AND facture = participation.facture");
+		System.out.println(Jpql);
+		/*
+		    select distinct facture.*
+			from utilisateurreel
+			left join participation on participation.utilisateur_id = utilisateurreel.id
+			left join facture on facture.id = participation.facture_id
+			where utilisateurreel.id=1
+		 */
+		DataSet dataSet = GenericDAO.executerSelectJPQL(Jpql.toString(),"ID;Libelle;Date de facture;Montant");
 		return dataSet;
 	}
 	
