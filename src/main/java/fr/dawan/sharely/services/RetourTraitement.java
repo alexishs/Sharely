@@ -39,5 +39,9 @@ public class RetourTraitement {
 	public boolean enErreur() {
 		return (getCodeRetour() != EnumResultatTraitement.OK);
 	}
+	
+	public boolean ok() {
+		return (getCodeRetour() == EnumResultatTraitement.OK);
+	}
 
 }

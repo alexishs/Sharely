@@ -103,7 +103,6 @@ public class GenericDAO {
 				// début de la transaction
 				transaction.begin();
 
-				// On met à jour la formation
 				entityManager.merge(entity);
 
 				// on commit tout ce qui s'est fait dans la transaction
