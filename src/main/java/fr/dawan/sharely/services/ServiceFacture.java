@@ -214,8 +214,16 @@ public class ServiceFacture {
 	}
 	
 	public DataSet listeFactures(UtilisateurReel utilisateurDemandeur, RetourTraitement retourTraitement){
-		DataSet dataSet = GenericDAO.executerSelectJPQL("SELECT facture.id, facture.libelle, facture.dateFacture, montant FROM Facture facture",
-														"ID;Libelle;Date de facture;Montant");
+		StringBuilder Jpql = new StringBuilder();
+		Jpql.append("SELECT distinct\n")
+			.append(	"facture.id, facture.libelle, facture.dateFacture, facture.montant\n")
+			.append("FROM\n")
+			.append(	"UtilisateurReel utilisateurReel\n")
+			.append(	"LEFT JOIN utilisateurReel.participations participation\n")
+			.append(	"LEFT JOIN participation.facture facture\n")
+			.append("WHERE\n")	
+			.append(	"utilisateurReel.id = "+Long.toString(utilisateurDemandeur.getId())+"\n");
+		DataSet dataSet = GenericDAO.executerSelectJPQL(Jpql.toString(),"ID;Libelle;Date de facture;Montant");
 		return dataSet;
 	}
 	

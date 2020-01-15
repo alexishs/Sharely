@@ -38,7 +38,7 @@ public class ControleurFacture {
 		RetourTraitement retourTraitement = new RetourTraitement();
 		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
 		DataSet dataSet = serviceFacture.listeFactures(sessionUtilisateur.getUtilisateur(), retourTraitement);
-		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, dataSet.toStringLists());
+		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, dataSet);
 	}
 	
 	@GetMapping(value = "/{idfacture}", produces = "application/json")
