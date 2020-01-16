@@ -43,5 +43,10 @@ public class RetourTraitement {
 	public boolean ok() {
 		return (getCodeRetour() == EnumResultatTraitement.OK);
 	}
+	
+	public RetourTraitement ajouterCommantaire(String nouvelleLigne){
+		commentairesUtilisateur.add(nouvelleLigne);
+		return this;
+	}
 
 }

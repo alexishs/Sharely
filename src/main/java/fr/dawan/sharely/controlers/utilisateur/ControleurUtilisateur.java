@@ -21,16 +21,35 @@ import fr.dawan.sharely.services.RetourTraitement;
 import fr.dawan.sharely.services.ServiceUtilisateur;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins="http://localhost:4200", allowCredentials = "true")
 @RequestMapping("/me")
 public class ControleurUtilisateur {
 	
 	@Autowired
 	ServiceUtilisateur serviceUtilisateur;
 	
+	@RequestMapping(value = "/register", method = RequestMethod.OPTIONS, produces = "application/json")
+	public ReponseRest formatInscription(HttpServletResponse reponseHttp) {
+		InfosInscription exemple = new InfosInscription();
+		exemple.lastName = "Nom";
+		exemple.firstName = "Prénom";
+		exemple.email = "email@domain.com";
+		exemple.password = "Motdepasse1@";
+		return ReponseRest.creerFormat(reponseHttp, exemple, RequestMethod.POST);
+	}
+	@PostMapping(value ="/register", produces = "application/json")
+	public ReponseRest inscription(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @RequestBody InfosInscription body) {
+		RetourTraitement retourTraitement = new RetourTraitement();
+		serviceUtilisateur.demandeInscriptionUtilisateur(body.lastName, body.firstName, body.email, body.password, retourTraitement);
+		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, null);
+	}
+	
 	@RequestMapping(value = "/login", method = RequestMethod.OPTIONS, produces = "application/json")
-	public ReponseRest formatlogin(HttpServletResponse reponseHttp) {
-		return ReponseRest.creerFormat(reponseHttp, new InfosConnexion(),RequestMethod.POST);
+	public ReponseRest formatLogin(HttpServletResponse reponseHttp) {
+		InfosConnexion exemple = new InfosConnexion();
+		exemple.email = "email@domain.com";
+		exemple.motDePasse = "motdepasse";
+		return ReponseRest.creerFormat(reponseHttp, exemple, RequestMethod.POST);
 	}
 	@PostMapping(value ="/login", produces = "application/json", consumes = "application/json")
 	public ReponseRest login(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @RequestBody InfosConnexion body) {

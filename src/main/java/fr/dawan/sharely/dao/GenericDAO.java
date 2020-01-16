@@ -27,7 +27,8 @@ import fr.dawan.sharely.beans.DbObject;
 
 public class GenericDAO {
 
-	public static <T extends DbObject> void create(T entity) {
+	public static <T extends DbObject> boolean create(T entity) {
+		boolean resultat = true;
 		if (entity.getId() == 0) {
 			EntityManager entityManager = createEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
@@ -45,10 +46,12 @@ public class GenericDAO {
 				// en cas d'erreur, on effectue un rollback
 				transaction.rollback();
 				ex.printStackTrace();
+				resultat = false;
 			} finally {
 				entityManager.close();
 			}
 		}
+		return resultat;
 	}
 
 	public static <T extends DbObject> T findById(Class<T> clazz, long id) {
@@ -57,7 +60,6 @@ public class GenericDAO {
 		T entity = null;
 
 		try {
-			// On charge la formation depuis la BDD, selon son ID
 			entity = entityManager.find(clazz, id);
 		} catch (Exception ex) {
 			ex.printStackTrace();

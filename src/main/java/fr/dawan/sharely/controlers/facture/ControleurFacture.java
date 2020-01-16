@@ -26,7 +26,7 @@ import fr.dawan.sharely.services.RetourTraitement;
 import fr.dawan.sharely.services.ServiceFacture;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins="http://localhost:4200", allowCredentials = "true")
 @RequestMapping("/invoices")
 public class ControleurFacture {
 	
@@ -51,7 +51,10 @@ public class ControleurFacture {
 	
 	@RequestMapping(value = "/new", method = RequestMethod.OPTIONS, produces = "application/json")
 	public ReponseRest formatNouvelleFacture(HttpServletResponse reponseHttp) {
-		return ReponseRest.creerFormat(reponseHttp, new InfosNouvelleFacture(),RequestMethod.POST);
+		InfosNouvelleFacture exemple = new InfosNouvelleFacture();
+		exemple.setLibelle("Libellé de la facture");
+		exemple.setMontant(123.45);
+		return ReponseRest.creerFormat(reponseHttp, exemple,RequestMethod.POST);
 	}
 	@PostMapping(value = "/new", produces = "application/json")
 	public ReponseRest nouvelleFacture(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @RequestBody InfosNouvelleFacture body) {

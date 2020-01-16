@@ -9,7 +9,11 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class IntercepteurConnexion extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest requeteHttp, HttpServletResponse response, Object handler) throws Exception {
-		if(!"/sharely/me/login".equals(requeteHttp.getRequestURI())) {
+		if( !(
+				("/sharely/me/login".equals(requeteHttp.getRequestURI()))
+				|| ("/sharely/me/register".equals(requeteHttp.getRequestURI()))
+			 )
+			) {
 			if(!SessionUtilisateur.getSession(requeteHttp).estConnecte()) {
 				response.sendError(HttpStatus.FORBIDDEN.value());
 				return false;
