@@ -1,5 +1,8 @@
 package fr.dawan.sharely.services;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -13,6 +16,7 @@ import fr.dawan.sharely.tools.EnvoiEmail;
 @Service
 public class ServiceUtilisateur {
 	
+	private final String SEPARATEUR_TOKEN = "@SEPSHARELY@";
 
 	/**
 	 * Enregistrement d'un nouvel utilisateur.
@@ -69,31 +73,43 @@ public class ServiceUtilisateur {
 				retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR,"Une erreur est survenue lors de l'enregistrement des informations. Veuillez réessayer ultérieurement",null);
 			}
 			if(retourTraitement.ok()) {
-				StringBuilder message = new StringBuilder();
-				message
-					.append("Bienvenue sur Sharely !\n")
-					.append("\n")
-					.append("Pour valider votre inscription, merci de vous rendre à cette adresse :\n")
-					.append("\n")
-					.append("http://localhost:8080/sharely/validationinscription?token=xxxxxxxxxxxxxxxxxxxxxx\n")
-					.append("\n")
-					.append("Attention : il est nécessaire de valider votre compte en vous rendant à l'adresse ci-dessus\n")
-					.append("dans les 24h suivant la création de votre compte.\n")
-					.append("Passé ce délai, l'inscription sera annulée. Il sera alors nécesssaire de recréer un nouveau compte.\n")
-					.append("\n")
-					.append("Ceci est un message automatique qui vous a été envoyé car une inscription sur Sharely.com a été demandée avec votre adresse email.\n")
-					.append("Si vous n'êtes pas à l'origine de cette inscription, veuillez ignorer ce message.\n")
-					.append("\n")
-					.append("Ce message n'a pas d'expéditeur. Pour nous contacter, merci d'utiliser la page \"Contact\" accessible depuis notre site www.sharely.com \n")
-					.append("\n")
-					.append("Toute l'équipe de sharely vous souhaite la bienvenue !\n")
-					.append("\n");
-				if(!EnvoiEmail.envoyer("Bienvenue sur Sharely !", message.toString(), nouvelUtilisateur.getEmail())) {
+				String url = null;
+				try {
+					url = "http://localhost/validationinscription?token="
+						  +URLEncoder.encode(
+								  BCrypt.hashpw(nouvelUtilisateur.getEmail()+SEPARATEUR_TOKEN+motDePasse, BCrypt.gensalt()),
+								  StandardCharsets.UTF_8.toString());
+				} catch (UnsupportedEncodingException e) {
 					retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR,"Une erreur est survenue lors de l'enregistrement de l'inscription",null);
-					retourTraitement
-						.ajouterCommantaire("Une erreur est survenue lors de l'envoi de l'email de confirmation d'inscription à votre adresse "+nouvelUtilisateur.getEmail()+".")
-						.ajouterCommantaire("En conséquence, votre demande d'inscription n'a pas pu être prise en compte.")
-						.ajouterCommantaire("Merci de bien vouloir vérifier votre adresse email et recommencer ultérieurement.");
+					e.printStackTrace();
+				}
+				if(retourTraitement.ok()) {
+					StringBuilder message = new StringBuilder();
+					message
+						.append("Bienvenue sur Sharely !\n")
+						.append("\n")
+						.append("Pour valider votre inscription, merci de vous rendre à cette adresse :\n")
+						.append("\n")
+						.append(url+"\n")
+						.append("\n")
+						.append("Attention : il est nécessaire de valider votre compte en vous rendant à l'adresse ci-dessus\n")
+						.append("dans les 24h suivant la création de votre compte.\n")
+						.append("Passé ce délai, l'inscription sera annulée. Il sera alors nécesssaire de recréer un nouveau compte.\n")
+						.append("\n")
+						.append("Ceci est un message automatique qui vous a été envoyé car une inscription sur Sharely.com a été demandée avec votre adresse email.\n")
+						.append("Si vous n'êtes pas à l'origine de cette inscription, veuillez ignorer ce message.\n")
+						.append("\n")
+						.append("Ce message n'a pas d'expéditeur. Pour nous contacter, merci d'utiliser la page \"Contact\" accessible depuis notre site www.sharely.com\n")
+						.append("\n")
+						.append("Toute l'équipe de sharely vous souhaite la bienvenue !\n")
+						.append("\n");
+					if(!EnvoiEmail.envoyer("Bienvenue sur Sharely !", message.toString(), nouvelUtilisateur.getEmail())) {
+						retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR,"Une erreur est survenue lors de l'enregistrement de l'inscription",null);
+						retourTraitement
+							.ajouterCommantaire("Une erreur est survenue lors de l'envoi de l'email de confirmation d'inscription à votre adresse "+nouvelUtilisateur.getEmail()+".")
+							.ajouterCommantaire("En conséquence, votre demande d'inscription n'a pas pu être prise en compte.")
+							.ajouterCommantaire("Merci de bien vouloir vérifier votre adresse email et recommencer ultérieurement.");
+					}	
 				}
 			}
 		}
