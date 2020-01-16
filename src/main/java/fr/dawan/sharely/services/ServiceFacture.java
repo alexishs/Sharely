@@ -1,7 +1,12 @@
 package fr.dawan.sharely.services;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.persistence.Tuple;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +15,9 @@ import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.beans.LigneFacture;
 import fr.dawan.sharely.beans.Participation;
 import fr.dawan.sharely.beans.UtilisateurReel;
+import fr.dawan.sharely.dao.DataSet;
 import fr.dawan.sharely.dao.FactureDAO;
+import fr.dawan.sharely.dao.GenericDAO;
 import fr.dawan.sharely.enums.EnumResultatTraitement;
 
 
@@ -34,13 +41,13 @@ public class ServiceFacture {
 			nouvelleFacture.getParticipations().add(new Participation(nouvelleFacture, premierParticipant));
 			FactureDAO.create(nouvelleFacture);
 			if(nouvelleFacture.getId() == 0) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ECHEC_METIER,"La création de facture a échoué.");
+				retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR,"La création de facture a échoué.", null);
 				return null;
 			}
-			retourTraitement.definirResultat(EnumResultatTraitement.OK, "Nouvelle facture créée.");
+			retourTraitement.definirResultat(EnumResultatTraitement.OK, "Nouvelle facture créée.", null);
 			return nouvelleFacture;
 		}catch (Exception e) {
-			retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE, "Une erreur inattendue est intervenue lors de la création de la facture. Veuillez réessayer ultérieurement.");
+			retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR, null, null);
 			/* TODO: enregistrer l'exception ici*/
 			return null;
 		}
@@ -59,11 +66,11 @@ public class ServiceFacture {
 		Facture factureDemandee = FactureDAO.findById(Facture.class, idFacture);
 		
 		if(factureDemandee == null) {
-			retourTraitement.definirResultat(EnumResultatTraitement.RESSOURCE_INCONNUE, "La facture demandée n'existe pas.");
+			retourTraitement.definirResultat(EnumResultatTraitement.UNKNOWN_RESSOURCE, "La facture demandée n'existe pas.", null);
 			return null;
 		} else {
 			if(!utilisateurEstParticipant(utilisateurLecteur.getId(),factureDemandee)) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ACCES_INTERDIT, null);
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, "Vous ne participez pas à cette facture", null);
 				return null;
 			}
 		}
@@ -204,6 +211,20 @@ public class ServiceFacture {
 	 */
 	public LocalDate validerFacture(long idfacture, UtilisateurReel utilisateurModificateur, RetourTraitement retourTraitement) {
 		return null;
+	}
+	
+	public DataSet listeFactures(UtilisateurReel utilisateurDemandeur, RetourTraitement retourTraitement){
+		StringBuilder Jpql = new StringBuilder();
+		Jpql.append("SELECT distinct\n")
+			.append(	"facture.id, facture.libelle, facture.dateFacture, facture.montant\n")
+			.append("FROM\n")
+			.append(	"UtilisateurReel utilisateurReel\n")
+			.append(	"LEFT JOIN utilisateurReel.participations participation\n")
+			.append(	"LEFT JOIN participation.facture facture\n")
+			.append("WHERE\n")	
+			.append(	"utilisateurReel.id = "+Long.toString(utilisateurDemandeur.getId())+"\n");
+		DataSet dataSet = GenericDAO.executerSelectJPQL(Jpql.toString(),"ID;Caption;Date;Amount");
+		return dataSet;
 	}
 	
 	private boolean utilisateurEstParticipant(long idUtilisateur, Facture facture) {
