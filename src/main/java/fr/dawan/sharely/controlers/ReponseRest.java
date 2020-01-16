@@ -28,6 +28,8 @@ public class ReponseRest {
 		this.message = messageUtilisateur;
 		this.comments = commentaires;
 		this.data = donnees;
+		this.reponseHttp.addHeader("Access-Control-Allow-Origin", "*");
+		this.reponseHttp.addHeader("Access-Control-Allow-Credentials", "true");
 		switch (this.resultCode) {
 		case OK:
 			this.reponseHttp.setStatus(HttpStatus.OK.value());
