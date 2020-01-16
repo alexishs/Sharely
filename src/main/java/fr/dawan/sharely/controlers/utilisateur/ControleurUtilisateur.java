@@ -72,6 +72,6 @@ public class ControleurUtilisateur {
 	
 	@GetMapping(value ="/info", produces = "application/json")
 	public ReponseRest info(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp) {
-		return new ReponseRest(reponseHttp, EnumResultatTraitement.UNHANDLED_ERROR, "Non implémenté.", null, null);
+		return new ReponseRest(reponseHttp, EnumResultatTraitement.OK, null, null, SessionUtilisateur.getSession(requeteHttp).getUtilisateur());
 	}
 }
