@@ -14,53 +14,53 @@ import fr.dawan.sharely.services.RetourTraitement;
 
 public class ReponseRest {
 	
-	private EnumResultatTraitement codeResultatService;
-	private String messageUtilisateur;
-	private Set<String> commentaires;
-	private String typeDonnee;
-	private Object donnees;
+	private EnumResultatTraitement resultCode;
+	private String message;
+	private Set<String> comments;
+	private String dataType;
+	private Object data;
 	@JsonIgnore
 	private HttpServletResponse reponseHttp;
 	
 	public ReponseRest(HttpServletResponse reponseHttp, EnumResultatTraitement codeResultatService, String messageUtilisateur, Set<String> commentaires, Object donnees) {
 		this.reponseHttp = reponseHttp;
-		this.codeResultatService = codeResultatService;
-		this.messageUtilisateur = messageUtilisateur;
-		this.commentaires = commentaires;
-		this.donnees = donnees;
-		switch (this.codeResultatService) {
+		this.resultCode = codeResultatService;
+		this.message = messageUtilisateur;
+		this.comments = commentaires;
+		this.data = donnees;
+		switch (this.resultCode) {
 		case OK:
 			this.reponseHttp.setStatus(HttpStatus.OK.value());
-			if(this.messageUtilisateur == null) {
-				this.messageUtilisateur = "OK.";
+			if(this.message == null) {
+				this.message = "OK.";
 			}
 			break;
 		case REQUEST_REFUSED:
 			this.reponseHttp.setStatus(HttpStatus.BAD_REQUEST.value());
-			if(this.messageUtilisateur == null) {
-				this.messageUtilisateur = "Le traitement demandé a été refusé.";
+			if(this.message == null) {
+				this.message = "Le traitement demandé a été refusé.";
 			}
 			break;
 		case UNKNOWN_RESSOURCE:
 			this.reponseHttp.setStatus(HttpStatus.NOT_FOUND.value());
-			if(this.messageUtilisateur == null) {
-				this.messageUtilisateur = "La ressource demandée est introuvable.";
+			if(this.message == null) {
+				this.message = "La ressource demandée est introuvable.";
 			}
 			break;
 		case ACCESS_FORBIDDEN:
 			this.reponseHttp.setStatus(HttpStatus.FORBIDDEN.value());
-			if(this.messageUtilisateur == null) {
-				this.messageUtilisateur = "L'accès à cette ressource est interdit.";
+			if(this.message == null) {
+				this.message = "L'accès à cette ressource est interdit.";
 			}
 			break;
 		default:
 			this.reponseHttp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-			if(this.messageUtilisateur == null) {
-				this.messageUtilisateur = "Une erreur est survenue lors du traitement demandé.";
+			if(this.message == null) {
+				this.message = "Une erreur est survenue lors du traitement demandé.";
 			}
 		}
-		if(this.donnees != null) {
-			this.typeDonnee = this.donnees.getClass().getSimpleName();
+		if(this.data != null) {
+			this.dataType = this.data.getClass().getSimpleName();
 		}
 	}
 	
@@ -95,28 +95,28 @@ public class ReponseRest {
 		return ReponseRest.creerFormat(reponseHttp, exempleDonnees, tableauMethodes);
 	}
 
-	public EnumResultatTraitement getCodeResultatService() {
-		return codeResultatService;
+	public EnumResultatTraitement getResultCode() {
+		return resultCode;
 	}
 
-	public String getMessageUtilisateur() {
-		return messageUtilisateur;
+	public String getMessage() {
+		return message;
 	}
 	
-	public Set<String> getCommentaires() {
-		return commentaires;
+	public Set<String> getComments() {
+		return comments;
 	}
 
-	public Object getDonnees() {
-		return donnees;
+	public Object getData() {
+		return data;
 	}
 
 	public HttpServletResponse getReponseHttp() {
 		return reponseHttp;
 	}
 
-	public String getTypeDonnee() {
-		return typeDonnee;
+	public String getDataType() {
+		return dataType;
 	}
 	
 }
