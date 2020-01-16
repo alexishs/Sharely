@@ -35,19 +35,19 @@ public class ReponseRest {
 				this.messageUtilisateur = "OK.";
 			}
 			break;
-		case DEMANDE_REFUSEE:
+		case REQUEST_REFUSED:
 			this.reponseHttp.setStatus(HttpStatus.BAD_REQUEST.value());
 			if(this.messageUtilisateur == null) {
 				this.messageUtilisateur = "Le traitement demandé a été refusé.";
 			}
 			break;
-		case RESSOURCE_INCONNUE:
+		case UNKNOWN_RESSOURCE:
 			this.reponseHttp.setStatus(HttpStatus.NOT_FOUND.value());
 			if(this.messageUtilisateur == null) {
 				this.messageUtilisateur = "La ressource demandée est introuvable.";
 			}
 			break;
-		case ACCES_INTERDIT:
+		case ACCESS_FORBIDDEN:
 			this.reponseHttp.setStatus(HttpStatus.FORBIDDEN.value());
 			if(this.messageUtilisateur == null) {
 				this.messageUtilisateur = "L'accès à cette ressource est interdit.";

@@ -41,13 +41,13 @@ public class ServiceFacture {
 			nouvelleFacture.getParticipations().add(new Participation(nouvelleFacture, premierParticipant));
 			FactureDAO.create(nouvelleFacture);
 			if(nouvelleFacture.getId() == 0) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE,"La création de facture a échoué.", null);
+				retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR,"La création de facture a échoué.", null);
 				return null;
 			}
 			retourTraitement.definirResultat(EnumResultatTraitement.OK, "Nouvelle facture créée.", null);
 			return nouvelleFacture;
 		}catch (Exception e) {
-			retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE, null, null);
+			retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR, null, null);
 			/* TODO: enregistrer l'exception ici*/
 			return null;
 		}
@@ -66,11 +66,11 @@ public class ServiceFacture {
 		Facture factureDemandee = FactureDAO.findById(Facture.class, idFacture);
 		
 		if(factureDemandee == null) {
-			retourTraitement.definirResultat(EnumResultatTraitement.RESSOURCE_INCONNUE, "La facture demandée n'existe pas.", null);
+			retourTraitement.definirResultat(EnumResultatTraitement.UNKNOWN_RESSOURCE, "La facture demandée n'existe pas.", null);
 			return null;
 		} else {
 			if(!utilisateurEstParticipant(utilisateurLecteur.getId(),factureDemandee)) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ACCES_INTERDIT, "Vous ne participez pas à cette facture", null);
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, "Vous ne participez pas à cette facture", null);
 				return null;
 			}
 		}
@@ -223,7 +223,7 @@ public class ServiceFacture {
 			.append(	"LEFT JOIN participation.facture facture\n")
 			.append("WHERE\n")	
 			.append(	"utilisateurReel.id = "+Long.toString(utilisateurDemandeur.getId())+"\n");
-		DataSet dataSet = GenericDAO.executerSelectJPQL(Jpql.toString(),"ID;Libelle;Date de facture;Montant");
+		DataSet dataSet = GenericDAO.executerSelectJPQL(Jpql.toString(),"ID;Caption;Date;Amount");
 		return dataSet;
 	}
 	

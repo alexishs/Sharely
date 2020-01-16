@@ -39,7 +39,7 @@ public class ControleurUtilisateur {
 		UtilisateurReel utilisateurIdentifie = serviceUtilisateur.connexion(body.email, body.motDePasse, retourTraitement);
 		if(!retourTraitement.enErreur()) {
 			if(!sessionUtilisateur.connexion(utilisateurIdentifie)) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ERREUR_INATTENDUE, "Une erreur est survenue lors de la création de session.", null);
+				retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR, "Une erreur est survenue lors de la création de session.", null);
 			}
 		}
 		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, null);
@@ -53,6 +53,6 @@ public class ControleurUtilisateur {
 	
 	@GetMapping(value ="/info", produces = "application/json")
 	public ReponseRest info(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp) {
-		return new ReponseRest(reponseHttp, EnumResultatTraitement.ERREUR_INATTENDUE, "Non implémenté.", null, null);
+		return new ReponseRest(reponseHttp, EnumResultatTraitement.UNHANDLED_ERROR, "Non implémenté.", null, null);
 	}
 }

@@ -29,18 +29,18 @@ public class ServiceUtilisateur {
 		
 		retourTraitement.definirResultat(EnumResultatTraitement.OK, null, null);
 		if ((nom == null) || (nom.equals(""))){
-			retourTraitement.definirResultat(EnumResultatTraitement.DEMANDE_REFUSEE, ENREGISTREMENT_IMPOSSIBLE, "Le nom n'est pas renseigné.");
+			retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, ENREGISTREMENT_IMPOSSIBLE, "Le nom n'est pas renseigné.");
 		}
 		if ((prenom == null) || (prenom.equals(""))){
-			retourTraitement.definirResultat(EnumResultatTraitement.DEMANDE_REFUSEE, ENREGISTREMENT_IMPOSSIBLE, "Le prénom n'est pas renseigné.");
+			retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, ENREGISTREMENT_IMPOSSIBLE, "Le prénom n'est pas renseigné.");
 		}	
 		if(!email.matches(REGEX_EMAIL)) {
-			retourTraitement.definirResultat(EnumResultatTraitement.DEMANDE_REFUSEE, ENREGISTREMENT_IMPOSSIBLE, "L'adresse email n'est pas valide.");
+			retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, ENREGISTREMENT_IMPOSSIBLE, "L'adresse email n'est pas valide.");
 		}
 		if(retourTraitement.ok()) {
 			UtilisateurReel utilisateurDejaExistant = GenericDAO.findByField(UtilisateurReel.class, "email", email);
 			if(utilisateurDejaExistant != null) {
-				retourTraitement.definirResultat(EnumResultatTraitement.DEMANDE_REFUSEE, ENREGISTREMENT_IMPOSSIBLE, "Un compte est déjà enregistré avec cette adresse email.");
+				retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, ENREGISTREMENT_IMPOSSIBLE, "Un compte est déjà enregistré avec cette adresse email.");
 			}
 		}
 			
@@ -87,7 +87,7 @@ public class ServiceUtilisateur {
 			}
 		}
 		if(utilisateur == null) {
-			retourTraitement.definirResultat(EnumResultatTraitement.DEMANDE_REFUSEE, "Connexion impossible", "Utilisateur ou mot de passe invalide");
+			retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, "Connexion impossible", "Utilisateur ou mot de passe invalide");
 		}else {
 			retourTraitement.definirResultat(EnumResultatTraitement.OK, null, null);
 		}
