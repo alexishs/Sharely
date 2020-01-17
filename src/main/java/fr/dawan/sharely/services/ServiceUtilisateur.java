@@ -1,6 +1,7 @@
 package fr.dawan.sharely.services;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
@@ -78,10 +79,10 @@ public class ServiceUtilisateur {
 					/*
 					 * Token = email + SEPARATEUR_TOKEN + mot de passe DEJA ENCODE, tel qu'enregistré en bdd
 					 */
-					url = "http://localhost/validationinscription?token="
-						  +URLEncoder.encode(
-								  BCrypt.hashpw(nouvelUtilisateur.getEmail()+SEPARATEUR_TOKEN+nouvelUtilisateur.getPassword(), BCrypt.gensalt()),
-								  StandardCharsets.UTF_8.toString());
+					String token = BCrypt.hashpw(nouvelUtilisateur.getEmail()+SEPARATEUR_TOKEN+nouvelUtilisateur.getPassword(), BCrypt.gensalt());
+					System.out.println("Token généré = "+token);
+					url = "http://localhost/validationinscription?token="+URLEncoder.encode(token,StandardCharsets.UTF_8.toString());
+					System.out.println("URL encodée = "+url);
 				} catch (UnsupportedEncodingException e) {
 					retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR,"Une erreur est survenue lors de l'enregistrement de l'inscription",null);
 					e.printStackTrace();
@@ -140,6 +141,14 @@ public class ServiceUtilisateur {
 			retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, VALIDATION_IMPOSSIBLE, "le token n'est pas renseignée.");
 		}	
 		if(retourTraitement.ok()) {
+			System.out.println("Token avant decode reçu pour confirmation = "+token);
+			try {
+				token = URLDecoder.decode(token,StandardCharsets.UTF_8.toString());
+			} catch (UnsupportedEncodingException e) {
+				retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR, VALIDATION_IMPOSSIBLE, null);
+				e.printStackTrace();
+			}
+			System.out.println("Token après decode reçu pour confirmation = "+token);
 			utilisateurTrouve = GenericDAO.findByField(UtilisateurReel.class, "email", email);
 			if(utilisateurTrouve == null) {
 				retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, VALIDATION_IMPOSSIBLE, "Email non reconnue.");
