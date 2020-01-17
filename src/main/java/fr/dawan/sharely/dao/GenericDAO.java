@@ -96,7 +96,8 @@ public class GenericDAO {
 	    return returnObject;
 	}
 
-	public static <T extends DbObject> void update(T entity) {
+	public static <T extends DbObject> boolean update(T entity) {
+		boolean resultat = true;
 		if (entity.getId() > 0) {
 			EntityManager entityManager = createEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
@@ -111,12 +112,14 @@ public class GenericDAO {
 				transaction.commit();
 			} catch (Exception ex) {
 				// en cas d'erreur, on effectue un rollback
+				resultat = false;
 				transaction.rollback();
 				ex.printStackTrace();
 			} finally {
 				entityManager.close();
 			}
 		}
+		return resultat;
 	}
 
 	public static <T extends DbObject> void delete(Class<T> clazz, long id) {

@@ -168,7 +168,12 @@ public class ServiceUtilisateur {
 				retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, VALIDATION_IMPOSSIBLE, "Token invalide.");
 			}
 		}
-		
+		if(retourTraitement.ok()) {
+			utilisateurTrouve.setValide(true);
+			if(!GenericDAO.update(utilisateurTrouve)) {
+				retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR, VALIDATION_IMPOSSIBLE, "Une erreur est survenue lors de la validation. Veuillez réessayer ultérieurement.");
+			}
+		}
 		if(retourTraitement.ok()) {
 			retourTraitement.definirResultat(EnumResultatTraitement.OK, "L'inscription est validée.", "Vous pouvez vous connecter avec votre email + mot de passe.");
 		}

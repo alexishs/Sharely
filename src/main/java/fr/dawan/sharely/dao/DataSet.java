@@ -53,20 +53,38 @@ public class DataSet implements Serializable {
 		}
 		return recordList;
 	}
-
-	private void remplireRecordList(){
-		recordList = new ArrayList<List<String>>();
-		for(Tuple enregistrement : enregistrements) {
-			List<String> ligne = new ArrayList<String>();
+	
+	public boolean EstVide() {
+		boolean resultat = false;
+		if(enregistrements.size() == 1) {
+			resultat = true;
+			Tuple enregistrement = enregistrements.get(0);
 			int nbChamps = enregistrement.getElements().size();
 			for (byte iChamp = 0; iChamp < nbChamps; iChamp++) {
-				if(enregistrement.get(iChamp) == null) {
-					ligne.add("");
-				}else {
-					ligne.add(enregistrement.get(iChamp).toString());
+				if(enregistrement.get(iChamp) != null) {
+					resultat = false;
+					break;
 				}
 			}
-			recordList.add(ligne);
+		}
+		return resultat;
+	}
+
+	private void remplireRecordList(){
+		if(!EstVide()) {
+			recordList = new ArrayList<List<String>>();
+			for(Tuple enregistrement : enregistrements) {
+				List<String> ligne = new ArrayList<String>();
+				int nbChamps = enregistrement.getElements().size();
+				for (byte iChamp = 0; iChamp < nbChamps; iChamp++) {
+					if(enregistrement.get(iChamp) == null) {
+						ligne.add("");
+					}else {
+						ligne.add(enregistrement.get(iChamp).toString());
+					}
+				}
+				recordList.add(ligne);
+			}
 		}
 	}
 	
