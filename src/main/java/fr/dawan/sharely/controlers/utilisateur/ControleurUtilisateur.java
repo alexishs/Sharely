@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.dawan.sharely.beans.UtilisateurReel;
@@ -44,14 +45,21 @@ public class ControleurUtilisateur {
 		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, null);
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.OPTIONS, produces = "application/json")
+	@GetMapping(value ="/confirm", produces = "application/json")
+	public ReponseRest confirm(HttpServletResponse reponseHttp, @RequestParam(name = "email") String email, @RequestParam(name = "token") String token) {
+		RetourTraitement retourTraitement = new RetourTraitement();
+		serviceUtilisateur.validationInscriptionUtilisateur(email, token, retourTraitement);
+		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, null);
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.OPTIONS)
 	public ReponseRest formatLogin(HttpServletResponse reponseHttp) {
 		InfosConnexion exemple = new InfosConnexion();
 		exemple.email = "email@domain.com";
 		exemple.motDePasse = "motdepasse";
 		return ReponseRest.creerFormat(reponseHttp, exemple, RequestMethod.POST);
 	}
-	@PostMapping(value ="/login", produces = "application/json", consumes = "application/json")
+	@PostMapping(value ="/login", produces = "application/json")
 	public ReponseRest login(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @RequestBody InfosConnexion body) {
 		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
 		RetourTraitement retourTraitement = new RetourTraitement();

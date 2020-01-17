@@ -35,10 +35,10 @@ public class ServiceUtilisateur {
 		final String REGEX_EMAIL = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 		
 		retourTraitement.definirResultat(EnumResultatTraitement.OK, null, null);
-		if ((nom == null) || (nom.equals(""))){
+		if ((nom == null) || nom.isEmpty()){
 			retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, ENREGISTREMENT_IMPOSSIBLE, "Le nom n'est pas renseigné.");
 		}
-		if ((prenom == null) || (prenom.equals(""))){
+		if ((prenom == null) || prenom.isEmpty()){
 			retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, ENREGISTREMENT_IMPOSSIBLE, "Le prénom n'est pas renseigné.");
 		}	
 		if(!email.matches(REGEX_EMAIL)) {
@@ -51,7 +51,7 @@ public class ServiceUtilisateur {
 			}
 		}
 		if(retourTraitement.ok()) {
-			if ((motDePasse == null) || (motDePasse.equals(""))){
+			if ((motDePasse == null) || motDePasse.isEmpty()){
 				retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, ENREGISTREMENT_IMPOSSIBLE, "Le mot de passe n'est pas renseigné.");
 			} else {
 				if(!(motDePasse.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=\\S+$).{8,}$"))) {
@@ -75,9 +75,12 @@ public class ServiceUtilisateur {
 			if(retourTraitement.ok()) {
 				String url = null;
 				try {
+					/*
+					 * Token = email + SEPARATEUR_TOKEN + mot de passe DEJA ENCODE, tel qu'enregistré en bdd
+					 */
 					url = "http://localhost/validationinscription?token="
 						  +URLEncoder.encode(
-								  BCrypt.hashpw(nouvelUtilisateur.getEmail()+SEPARATEUR_TOKEN+motDePasse, BCrypt.gensalt()),
+								  BCrypt.hashpw(nouvelUtilisateur.getEmail()+SEPARATEUR_TOKEN+nouvelUtilisateur.getPassword(), BCrypt.gensalt()),
 								  StandardCharsets.UTF_8.toString());
 				} catch (UnsupportedEncodingException e) {
 					retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR,"Une erreur est survenue lors de l'enregistrement de l'inscription",null);
@@ -109,6 +112,7 @@ public class ServiceUtilisateur {
 							.ajouterCommantaire("Une erreur est survenue lors de l'envoi de l'email de confirmation d'inscription à votre adresse "+nouvelUtilisateur.getEmail()+".")
 							.ajouterCommantaire("En conséquence, votre demande d'inscription n'a pas pu être prise en compte.")
 							.ajouterCommantaire("Merci de bien vouloir vérifier votre adresse email et recommencer ultérieurement.");
+						GenericDAO.delete(UtilisateurReel.class, nouvelUtilisateur.getId());
 					}	
 				}
 			}
@@ -119,12 +123,43 @@ public class ServiceUtilisateur {
 	/**
 	 * Validation de l'inscription d'un utilisateur suite à l'activation de l'URL de confirmation reçue par mail.
 	 * En cas d'echec,retourne false.
-	 * @param utilisateur
+	 * @param email
+	 * @param token
 	 * @param retourTraitement
 	 * @return boolean
 	 */
-	public boolean validationInscriptionUtilisateur(UtilisateurReel utilisateur,RetourTraitement retourTraitement) {
-		return false;
+	public boolean validationInscriptionUtilisateur(String email, String token, RetourTraitement retourTraitement) {
+		final String VALIDATION_IMPOSSIBLE = "Validation de l'inscription impossible.";
+		String motDePasse = null;
+		UtilisateurReel utilisateurTrouve = null;
+		
+		if((email == null) || email.isEmpty()){
+			retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, VALIDATION_IMPOSSIBLE, "L'email n'est pas renseignée.");
+		}
+		if((token == null) || token.isEmpty()){
+			retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, VALIDATION_IMPOSSIBLE, "le token n'est pas renseignée.");
+		}	
+		if(retourTraitement.ok()) {
+			utilisateurTrouve = GenericDAO.findByField(UtilisateurReel.class, "email", email);
+			if(utilisateurTrouve == null) {
+				retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, VALIDATION_IMPOSSIBLE, "Email non reconnue.");
+			}
+		}
+		if(retourTraitement.ok()) {
+			try {
+				if(!BCrypt.checkpw(email+SEPARATEUR_TOKEN+utilisateurTrouve.getPassword(),token)) {
+					utilisateurTrouve = null;
+					retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, VALIDATION_IMPOSSIBLE, "Token non reconnu.");
+				}
+			} catch (Exception e) {
+				retourTraitement.definirResultat(EnumResultatTraitement.REQUEST_REFUSED, VALIDATION_IMPOSSIBLE, "Token invalide.");
+			}
+		}
+		
+		if(retourTraitement.ok()) {
+			retourTraitement.definirResultat(EnumResultatTraitement.OK, "L'inscription est validée.", "Vous pouvez vous connecter avec votre email + mot de passe.");
+		}
+		return retourTraitement.ok();
 	}
 
 	/**
