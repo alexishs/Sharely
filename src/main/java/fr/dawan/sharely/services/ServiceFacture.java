@@ -223,7 +223,7 @@ public class ServiceFacture {
 			.append(	"LEFT JOIN participation.facture facture\n")
 			.append("WHERE\n")	
 			.append(	"utilisateurReel.id = "+Long.toString(utilisateurDemandeur.getId())+"\n");
-		DataSet dataSet = GenericDAO.executerSelectJPQL(Jpql.toString(),"ID;Caption;Date;Amount");
+		DataSet dataSet = GenericDAO.executerSelectDataSetJPQL(Jpql.toString(),"ID;Caption;Date;Amount");
 		return dataSet;
 	}
 	

@@ -56,14 +56,14 @@ public class ControleurUtilisateur {
 	public ReponseRest formatLogin(HttpServletResponse reponseHttp) {
 		InfosConnexion exemple = new InfosConnexion();
 		exemple.email = "email@domain.com";
-		exemple.motDePasse = "motdepasse";
+		exemple.password = "motdepasse";
 		return ReponseRest.creerFormat(reponseHttp, exemple, RequestMethod.POST);
 	}
 	@PostMapping(value ="/login", produces = "application/json")
 	public ReponseRest login(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @RequestBody InfosConnexion body) {
 		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
 		RetourTraitement retourTraitement = new RetourTraitement();
-		UtilisateurReel utilisateurIdentifie = serviceUtilisateur.connexion(body.email, body.motDePasse, retourTraitement);
+		UtilisateurReel utilisateurIdentifie = serviceUtilisateur.connexion(body.email, body.password, retourTraitement);
 		if(!retourTraitement.enErreur()) {
 			if(!sessionUtilisateur.connexion(utilisateurIdentifie)) {
 				retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR, "Une erreur est survenue lors de la création de session.", null);

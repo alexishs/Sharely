@@ -31,7 +31,7 @@ public class EnvoiEmail {
 	    
 	    MimeMessage message = new MimeMessage(session);
 	    try {
-	        message.setText(contenu);
+	        message.setContent(contenu,"text/html");
 	        message.setSubject(titre);
 	        message.addRecipients(Message.RecipientType.TO, destinataire);
 	        //message.addRecipients(Message.RecipientType.CC, copyDest);

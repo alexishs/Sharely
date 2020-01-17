@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Properties;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -81,7 +82,7 @@ public class ServiceUtilisateur {
 					 */
 					String token = BCrypt.hashpw(nouvelUtilisateur.getEmail()+SEPARATEUR_TOKEN+nouvelUtilisateur.getPassword(), BCrypt.gensalt());
 					System.out.println("Token généré = "+token);
-					url = "http://localhost/validationinscription?token="+URLEncoder.encode(token,StandardCharsets.UTF_8.toString());
+					url = "http://localhost/validationinscription?email="+email+"&token="+URLEncoder.encode(token,StandardCharsets.UTF_8.toString());
 					System.out.println("URL encodée = "+url);
 				} catch (UnsupportedEncodingException e) {
 					retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR,"Une erreur est survenue lors de l'enregistrement de l'inscription",null);
@@ -90,24 +91,27 @@ public class ServiceUtilisateur {
 				if(retourTraitement.ok()) {
 					StringBuilder message = new StringBuilder();
 					message
-						.append("Bienvenue sur Sharely !\n")
+						.append("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>")
+						.append("<h1>Bienvenue sur Sharely !</h1>\n")
 						.append("\n")
-						.append("Pour valider votre inscription, merci de vous rendre à cette adresse :\n")
+						.append("<p>Pour valider votre inscription, merci de vous rendre à cette adresse :</p>\n")
 						.append("\n")
-						.append(url+"\n")
+						.append("<a href=\""+url+"\">"+url+"</a>\n")
 						.append("\n")
-						.append("Attention : il est nécessaire de valider votre compte en vous rendant à l'adresse ci-dessus\n")
+						.append("<p>Attention : il est nécessaire de valider votre compte en vous rendant à l'adresse ci-dessus\n")
 						.append("dans les 24h suivant la création de votre compte.\n")
-						.append("Passé ce délai, l'inscription sera annulée. Il sera alors nécesssaire de recréer un nouveau compte.\n")
+						.append("Passé ce délai, l'inscription sera annulée. Il sera alors nécesssaire de recréer un nouveau compte.</p>\n")
 						.append("\n")
-						.append("Ceci est un message automatique qui vous a été envoyé car une inscription sur Sharely.com a été demandée avec votre adresse email.\n")
-						.append("Si vous n'êtes pas à l'origine de cette inscription, veuillez ignorer ce message.\n")
+						.append("<p>Ceci est un message automatique qui vous a été envoyé car une inscription sur Sharely.com a été demandée avec votre adresse email.\n")
+						.append("Si vous n'êtes pas à l'origine de cette inscription, veuillez ignorer ce message.</p>\n")
 						.append("\n")
-						.append("Ce message n'a pas d'expéditeur. Pour nous contacter, merci d'utiliser la page \"Contact\" accessible depuis notre site www.sharely.com\n")
+						.append("<p>Ce message n'a pas d'expéditeur. Pour nous contacter, merci d'utiliser la page \"Contact\" accessible depuis notre site <bold>www.sharely.com</bold>.</p>\n")
 						.append("\n")
-						.append("Toute l'équipe de sharely vous souhaite la bienvenue !\n")
-						.append("\n");
-					if(!EnvoiEmail.envoyer("Bienvenue sur Sharely !", message.toString(), nouvelUtilisateur.getEmail())) {
+						.append("<p>Toute l'équipe de sharely vous souhaite la bienvenue !</p>\n")
+						.append("</body></html>\n");
+					if(!EnvoiEmail.envoyer("Bienvenue sur Sharely !",
+							message.toString(),
+							nouvelUtilisateur.getEmail())) {
 						retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR,"Une erreur est survenue lors de l'enregistrement de l'inscription",null);
 						retourTraitement
 							.ajouterCommantaire("Une erreur est survenue lors de l'envoi de l'email de confirmation d'inscription à votre adresse "+nouvelUtilisateur.getEmail()+".")
@@ -180,9 +184,10 @@ public class ServiceUtilisateur {
 	 * @return boolean
 	 */
 	public UtilisateurReel connexion(String email,String motDePasse,RetourTraitement retourTraitement) {
-		//System.out.println("Mdp encrypté : "+BCrypt.hashpw(motDePasse, BCrypt.gensalt()));
-		UtilisateurReel utilisateur = GenericDAO.findByField(UtilisateurReel.class, "email", email);
-		if(utilisateur != null) {
+		UtilisateurReel utilisateur = null;
+		List<UtilisateurReel> listeResultat = GenericDAO.executerSelectEntiteJPQL("SELECT utilisateur FROM UtilisateurReel utilisateur WHERE utilisateur.email = '"+email+"' AND utilisateur.valide=true", UtilisateurReel.class);
+		if(listeResultat.size() == 1) {
+			utilisateur = listeResultat.get(0);
 			if(!BCrypt.checkpw(motDePasse,utilisateur.getPassword())) {
 				utilisateur = null;
 			}

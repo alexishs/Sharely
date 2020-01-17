@@ -186,10 +186,19 @@ public class GenericDAO {
 		return resultat;
 	}
 	
-	public static DataSet executerSelectJPQL(String requete,String libelles){
+	public static <T extends DbObject> List<T> executerSelectEntiteJPQL(String requeteJPQL,Class<T> clazz){
+		EntityManager em = createEntityManager();
+		List<T> resultat = null;
+		TypedQuery<T> query = em.createQuery(requeteJPQL, clazz);
+		resultat = query.getResultList();
+		em.close();
+		return resultat;
+	}
+	
+	public static DataSet executerSelectDataSetJPQL(String requeteJPQL,String libelles){
 		EntityManager em = createEntityManager();
 		DataSet dataSet = new DataSet(libelles);
-		TypedQuery<Tuple> query = em.createQuery(requete, Tuple.class);
+		TypedQuery<Tuple> query = em.createQuery(requeteJPQL, Tuple.class);
 		dataSet.SetEnregistrements(query.getResultList());
 		em.close();
 		return dataSet;
