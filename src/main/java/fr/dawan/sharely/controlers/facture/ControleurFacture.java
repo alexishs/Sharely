@@ -26,7 +26,7 @@ import fr.dawan.sharely.services.RetourTraitement;
 import fr.dawan.sharely.services.ServiceFacture;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200", allowCredentials = "true")
+@CrossOrigin(origins="*", allowCredentials = "true")
 @RequestMapping("/invoices")
 public class ControleurFacture {
 	

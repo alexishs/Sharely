@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class IntercepteurConnexion extends HandlerInterceptorAdapter {
