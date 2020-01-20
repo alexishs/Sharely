@@ -25,6 +25,7 @@ public class EnvoiEmail {
 		Properties config = new Properties();
 		config.setProperty("mail.transport.protocol", "smtp");
 		config.setProperty("mail.smtp.host", SERVEUR_SMTP);
+		//config.setProperty("mail.smtp.port", "10000");
 		config.setProperty("mail.smtp.user", UTILISATEUR_SMTP); /* TODO: utile ?? */
 		config.setProperty("mail.from", EXPEDITEUR_NOREPLY);
 	    Session session = Session.getDefaultInstance(config);

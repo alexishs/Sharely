@@ -9,7 +9,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class IntercepteurConnexion extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest requeteHttp, HttpServletResponse response, Object handler) throws Exception {
-		System.out.println("Méthode = "+requeteHttp.getMethod());
 		if(!requeteHttp.getMethod().equals("OPTIONS")) {
 			if( !(
 					("/sharely/me/login".equals(requeteHttp.getRequestURI()))
