@@ -1,6 +1,7 @@
 package fr.dawan.sharely.controlers.facture;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Tuple;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,5 +77,18 @@ public class ControleurFacture {
 		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
 		LigneFacture nouvelleLigne = serviceFacture.nouvelleLigneFacture(idFacture, sessionUtilisateur.getUtilisateur(), retourTraitement);
 		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, nouvelleLigne);
+	}
+	
+	@PatchMapping(value = "/{idfacture}/lines", produces = "application/json")
+	public ReponseRest modifierListeLignes(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp,
+										   @PathVariable(value = "idfacture") long idFacture, @RequestBody Set<LigneFacture> lignesAModifier) {
+		RetourTraitement retourTraitement = new RetourTraitement();
+		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
+		serviceFacture.modifierListeLigneFacture(idFacture, lignesAModifier, sessionUtilisateur.getUtilisateur(), retourTraitement);
+		ReponseRest reponseRest = ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, null);
+		if(retourTraitement.ok()) {
+			reponseHttp.setStatus(204);
+		}
+		return reponseRest;
 	}
 }

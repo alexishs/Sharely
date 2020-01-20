@@ -25,10 +25,8 @@ import fr.dawan.sharely.enums.EnumResultatTraitement;
 @Service
 public class ServiceFacture {
 	
-	private final String VOUS_NE_PARTICIPEZ_PAS_A_LA_FACTURE = "Vous ne participez pas à la facture.";
 	private final String FACTURE_DEMANDEE_NEXISTE_PAS = "La facture demandée n'existe pas.";
-	private final String FACTURE_VALIDEE = "La facture est validée.";
-	private final String PARTICIPATION_VALIDEE = "Votre participation est validée.";
+	private final String VOUS_NE_PARTICIPEZ_PAS_A_LA_FACTURE = "Vous ne participez pas à la facture.";
 	
 	/**
 	 * Création d'une nouvelle facture, en précisant le libellé et le montant total.
@@ -70,19 +68,11 @@ public class ServiceFacture {
 	 */
 	public Facture lireFacture(long idFacture, UtilisateurReel utilisateurLecteur, RetourTraitement retourTraitement) {
 		Facture factureDemandee = FactureDAO.findById(Facture.class, idFacture);
-		
-		if(factureDemandee == null) {
-			retourTraitement.definirResultat(EnumResultatTraitement.UNKNOWN_RESSOURCE, FACTURE_DEMANDEE_NEXISTE_PAS, null);
-			return null;
-		} else {
-			if(!utilisateurEstParticipant(utilisateurLecteur,factureDemandee)) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, VOUS_NE_PARTICIPEZ_PAS_A_LA_FACTURE, null);
-				return null;
-			}
+		if (!testerAccesFacture(utilisateurLecteur, factureDemandee, retourTraitement)) {
+			factureDemandee = null;
 		}
 		return factureDemandee;
 	}
-	
 	/**
 	 * Modification d'une facture (entête uniquement). Les lignes, participants et dettes ne sont pas traités.
 	 * L'utilisateur utilisateurModificateur doit être participant de la facture.
@@ -108,15 +98,7 @@ public class ServiceFacture {
 	public LigneFacture nouvelleLigneFacture(long idFacture, UtilisateurReel utilisateurAjouteur, RetourTraitement retourTraitement) {
 		LigneFacture nouvelleLigne = null;
 		Facture facture = GenericDAO.findById(Facture.class, idFacture);
-		if(facture == null) {
-			retourTraitement.definirResultat(EnumResultatTraitement.UNKNOWN_RESSOURCE, FACTURE_DEMANDEE_NEXISTE_PAS, null);
-		}
-		
-		if(retourTraitement.ok()) {
-			if(!utilisateurEstParticipant(utilisateurAjouteur, facture)) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, VOUS_NE_PARTICIPEZ_PAS_A_LA_FACTURE, null);
-			}
-		}
+		testerModificationPossible(utilisateurAjouteur, facture, retourTraitement);
 		if(retourTraitement.ok()) {
 			nouvelleLigne = new LigneFacture();
 			nouvelleLigne.setFacture(facture);
@@ -278,6 +260,43 @@ public class ServiceFacture {
 			}	
 		}
 		return null;
+	}
+	
+	private boolean testerAccesFacture(UtilisateurReel utilisateurAccesseur, Facture facture, RetourTraitement retourTraitement) {
+		if(facture == null) {
+			retourTraitement.definirResultat(EnumResultatTraitement.UNKNOWN_RESSOURCE, FACTURE_DEMANDEE_NEXISTE_PAS, null);
+		}
+		if(retourTraitement.ok()) {
+			Participation participation = participationUtilisateur(facture, utilisateurAccesseur);
+			if(participation == null) {
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, VOUS_NE_PARTICIPEZ_PAS_A_LA_FACTURE, null);
+			}
+		}
+		return retourTraitement.ok();
+	}
+	
+	private boolean testerModificationPossible(UtilisateurReel utilisateurModificateur, Facture facture, RetourTraitement retourTraitement) {
+		Participation participation = null;
+		if(facture == null) {
+			retourTraitement.definirResultat(EnumResultatTraitement.UNKNOWN_RESSOURCE, FACTURE_DEMANDEE_NEXISTE_PAS, null);
+		}
+		if(retourTraitement.ok()) {
+			participation = participationUtilisateur(facture, utilisateurModificateur);
+			if(participation == null) {
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, VOUS_NE_PARTICIPEZ_PAS_A_LA_FACTURE, null);
+			}	
+		}
+		if(retourTraitement.ok()) {
+			if(participation.getDateValidationSaisie() != null) {
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, "Votre participation est validée.", null);
+			}
+		}
+		if(retourTraitement.ok()) {
+			if(facture.getDateValidation() != null) {
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, "La facture est validée.", null);
+			}
+		}
+		return retourTraitement.ok();
 	}
 	
 }
