@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import fr.dawan.sharely.beans.Facture;
 import fr.dawan.sharely.beans.LigneFacture;
 import fr.dawan.sharely.beans.Participation;
+import fr.dawan.sharely.beans.Utilisateur;
 import fr.dawan.sharely.beans.UtilisateurReel;
 import fr.dawan.sharely.dao.DataSet;
 import fr.dawan.sharely.dao.FactureDAO;
@@ -23,6 +24,11 @@ import fr.dawan.sharely.enums.EnumResultatTraitement;
 
 @Service
 public class ServiceFacture {
+	
+	private final String VOUS_NE_PARTICIPEZ_PAS_A_LA_FACTURE = "Vous ne participez pas à la facture.";
+	private final String FACTURE_DEMANDEE_NEXISTE_PAS = "La facture demandée n'existe pas.";
+	private final String FACTURE_VALIDEE = "La facture est validée.";
+	private final String PARTICIPATION_VALIDEE = "Votre participation est validée.";
 	
 	/**
 	 * Création d'une nouvelle facture, en précisant le libellé et le montant total.
@@ -66,11 +72,11 @@ public class ServiceFacture {
 		Facture factureDemandee = FactureDAO.findById(Facture.class, idFacture);
 		
 		if(factureDemandee == null) {
-			retourTraitement.definirResultat(EnumResultatTraitement.UNKNOWN_RESSOURCE, "La facture demandée n'existe pas.", null);
+			retourTraitement.definirResultat(EnumResultatTraitement.UNKNOWN_RESSOURCE, FACTURE_DEMANDEE_NEXISTE_PAS, null);
 			return null;
 		} else {
-			if(!utilisateurEstParticipant(utilisateurLecteur.getId(),factureDemandee)) {
-				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, "Vous ne participez pas à cette facture", null);
+			if(!utilisateurEstParticipant(utilisateurLecteur,factureDemandee)) {
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, VOUS_NE_PARTICIPEZ_PAS_A_LA_FACTURE, null);
 				return null;
 			}
 		}
@@ -88,6 +94,37 @@ public class ServiceFacture {
 	 */
 	public Facture modifierFactureEntete(Facture factureEntete, UtilisateurReel utilisateurModificateur, RetourTraitement retourTraitement) {
 		return null;
+	}
+	
+	/**
+	 * Ajout d'une nouvelle ligne vide à la facture demandée.
+	 * L'utilisateur utilisateurAjouteur doit être participant de la facture.
+	 * En cas d'échec, renvoit null.
+	 * @param idFacture
+	 * @param utilisateurAjouteur
+	 * @param retourTraitement
+	 * @return LigneFacture
+	 */
+	public LigneFacture nouvelleLigneFacture(long idFacture, UtilisateurReel utilisateurAjouteur, RetourTraitement retourTraitement) {
+		LigneFacture nouvelleLigne = null;
+		Facture facture = GenericDAO.findById(Facture.class, idFacture);
+		if(facture == null) {
+			retourTraitement.definirResultat(EnumResultatTraitement.UNKNOWN_RESSOURCE, FACTURE_DEMANDEE_NEXISTE_PAS, null);
+		}
+		
+		if(retourTraitement.ok()) {
+			if(!utilisateurEstParticipant(utilisateurAjouteur, facture)) {
+				retourTraitement.definirResultat(EnumResultatTraitement.ACCESS_FORBIDDEN, VOUS_NE_PARTICIPEZ_PAS_A_LA_FACTURE, null);
+			}
+		}
+		if(retourTraitement.ok()) {
+			nouvelleLigne = new LigneFacture();
+			nouvelleLigne.setFacture(facture);
+			if (!GenericDAO.create(nouvelleLigne)) {
+				retourTraitement.definirResultat(EnumResultatTraitement.UNHANDLED_ERROR,null,null);
+			}
+		}
+		return nouvelleLigne;
 	}
 	
 	/**
@@ -227,14 +264,20 @@ public class ServiceFacture {
 		return dataSet;
 	}
 	
-	private boolean utilisateurEstParticipant(long idUtilisateur, Facture facture) {
-		Set<Participation> listeParticipations = facture.getParticipations();
-		for(Participation participation : listeParticipations) {
-			if(participation.getUtilisateur().getId() == idUtilisateur) {
-				return true;
-			}
+	private boolean utilisateurEstParticipant(Utilisateur utilisateur, Facture facture) {
+		return (participationUtilisateur(facture, utilisateur) != null);
+	}
+	
+	private Participation participationUtilisateur(Facture facture, Utilisateur utilisateur) {
+		if(facture != null) {
+			Set<Participation> listeParticipations = facture.getParticipations();
+			for(Participation participation : listeParticipations) {
+				if(participation.getUtilisateur().getId() == utilisateur.getId()) {
+					return participation;
+				}
+			}	
 		}
-		return false;
+		return null;
 	}
 	
 }

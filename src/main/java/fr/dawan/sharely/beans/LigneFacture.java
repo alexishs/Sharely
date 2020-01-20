@@ -11,11 +11,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "LigneFacture")
 public class LigneFacture extends DbObject{
 	
 	@ManyToOne(fetch=FetchType.EAGER)
+	@JsonIgnore
 	private Facture facture;
 	
 	private String libelle;
@@ -24,7 +27,6 @@ public class LigneFacture extends DbObject{
 	private double montant;
 	
 	@ManyToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
-	// temp @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy = "LigneFacture")
 	private Set<Participation> participations = new HashSet<Participation>(); // contient la ou les participations associée(s) à la ligne de facture.
 	
 	public LigneFacture() {}

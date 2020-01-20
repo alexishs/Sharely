@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.dawan.sharely.beans.Facture;
+import fr.dawan.sharely.beans.LigneFacture;
 import fr.dawan.sharely.controlers.ReponseRest;
 import fr.dawan.sharely.controlers.SessionUtilisateur;
 import fr.dawan.sharely.dao.DataSet;
@@ -66,5 +67,13 @@ public class ControleurFacture {
 				SessionUtilisateur.getSession(requeteHttp).getUtilisateur(),
 				retourTraitement);
 		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, nouvelleFacture);
+	}
+	
+	@GetMapping(value = "/{idfacture}/lines/new", produces = "application/json")
+	public ReponseRest nouvelleLigne(HttpServletRequest requeteHttp, HttpServletResponse reponseHttp, @PathVariable(value = "idfacture") long idFacture) {
+		RetourTraitement retourTraitement = new RetourTraitement();
+		SessionUtilisateur sessionUtilisateur = SessionUtilisateur.getSession(requeteHttp);
+		LigneFacture nouvelleLigne = serviceFacture.nouvelleLigneFacture(idFacture, sessionUtilisateur.getUtilisateur(), retourTraitement);
+		return ReponseRest.creerAvecRetourTraitement(reponseHttp, retourTraitement, nouvelleLigne);
 	}
 }

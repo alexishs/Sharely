@@ -34,16 +34,10 @@ public class GenericDAO {
 			EntityTransaction transaction = entityManager.getTransaction();
 
 			try {
-				// début de la transaction
 				transaction.begin();
-
-				// On insère la formation dans la BDD
 				entityManager.persist(entity);
-
-				// on commit tout ce qui s'est fait dans la transaction
 				transaction.commit();
 			} catch (Exception ex) {
-				// en cas d'erreur, on effectue un rollback
 				transaction.rollback();
 				ex.printStackTrace();
 				resultat = false;
@@ -101,17 +95,11 @@ public class GenericDAO {
 		if (entity.getId() > 0) {
 			EntityManager entityManager = createEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
-
 			try {
-				// début de la transaction
 				transaction.begin();
-
 				entityManager.merge(entity);
-
-				// on commit tout ce qui s'est fait dans la transaction
 				transaction.commit();
 			} catch (Exception ex) {
-				// en cas d'erreur, on effectue un rollback
 				resultat = false;
 				transaction.rollback();
 				ex.printStackTrace();
@@ -127,16 +115,11 @@ public class GenericDAO {
 		EntityTransaction transaction = entityManager.getTransaction();
 
 		try {
-			// début de la transaction
 			transaction.begin();
-
 			T entity = entityManager.find(clazz, id);
 			entityManager.remove(entity);
-
-			// on commit tout ce qui s'est fait dans la transaction
 			transaction.commit();
 		} catch (Exception ex) {
-			// en cas d'erreur, on effectue un rollback
 			transaction.rollback();
 			ex.printStackTrace();
 		} finally {
